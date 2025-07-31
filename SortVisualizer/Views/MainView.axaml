@@ -1,0 +1,101 @@
+﻿<UserControl
+    x:Class="SortVisualizer.Views.MainView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:SortVisualizer.Converters"
+    xmlns:models="clr-namespace:SortVisualizer.Models"
+    xmlns:viewmodels="clr-namespace:SortVisualizer.ViewModels"
+    x:DataType="viewmodels:MainViewModel">
+
+    <UserControl.Resources>
+        <converters:ColorStateConverter x:Key="ColorStateConverter" />
+        <converters:StepFormatConverter x:Key="StepFormatConverter" />
+
+    </UserControl.Resources>
+
+    <DockPanel Margin="10">
+
+        <StackPanel
+            Margin="0,0,0,10"
+            HorizontalAlignment="Center"
+            DockPanel.Dock="Top"
+            Orientation="Horizontal">
+            <Button
+                Command="{Binding GenerateCommand}"
+                CommandParameter="{x:Static models:GenerateType.Random}"
+                Content="GenerateRandom" />
+            <Button
+                Command="{Binding GenerateCommand}"
+                CommandParameter="{x:Static models:GenerateType.Reversed}"
+                Content="GenerateReversed" />
+            <Button
+                Command="{Binding GenerateCommand}"
+                CommandParameter="{x:Static models:GenerateType.NearlySorted}"
+                Content="GenerateNearlySorted" />
+        </StackPanel>
+
+        <StackPanel>
+            <ItemsControl ItemsSource="{Binding Items}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="models:SortItem">
+                        <Border
+                            Width="10"
+                            Height="{Binding Value}"
+                            Margin="1">
+                            <Border.Background>
+                                <MultiBinding Converter="{StaticResource ColorStateConverter}">
+                                    <Binding Path="IsSwapping" />
+                                    <Binding Path="IsComparing" />
+                                </MultiBinding>
+                            </Border.Background>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <StackPanel
+                Margin="10"
+                HorizontalAlignment="Center"
+                Orientation="Vertical">
+                <TextBlock Text="{Binding Speed, StringFormat='Speed: {0}x'}" />
+                <Slider
+                    IsSnapToTickEnabled="True"
+                    Maximum="2.0"
+                    Minimum="0.25"
+                    TickFrequency="0.25"
+                    Value="{Binding Speed, Mode=TwoWay}" />
+
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                    <Button Command="{Binding StepBackwardCommand}" Content="⏮" />
+                    <Button Command="{Binding StepForwardCommand}" Content="⏭" />
+                </StackPanel>
+
+
+                <Slider
+                    Name="ProgressSlider"
+                    IsSnapToTickEnabled="True"
+                    Maximum="{Binding TotalSteps, Mode=TwoWay}"
+                    Minimum="0"
+                    PointerCaptureLost="ProgressSlider_PointerCaptureLost"
+                    TickFrequency="1"
+                    Value="{Binding CurrentStep, Mode=TwoWay}" />
+                <TextBox IsReadOnly="True">
+                    <TextBox.Text>
+                        <MultiBinding Converter="{StaticResource StepFormatConverter}">
+                            <Binding Path="CurrentStep" />
+                            <Binding Path="TotalSteps" />
+                        </MultiBinding>
+                    </TextBox.Text>
+                </TextBox>
+				<Button
+                    Command="{Binding PlayCommand}"
+                    Content="Play" />
+            </StackPanel>
+        </StackPanel>
+    </DockPanel>
+</UserControl>
