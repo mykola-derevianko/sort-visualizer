@@ -1,9 +1,11 @@
-﻿using SortVisualizer.Models;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using SortVisualizer.Models;
 using SortVisualizer.Services;
 using SortVisualizer.Sorting;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+using SortVisualizer.Sorting.Commands;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,9 +15,10 @@ namespace SortVisualizer.ViewModels;
 public partial class MainViewModel : ObservableObject
 {
     private readonly ISortItemGenerator _generator;
-    private readonly BubbleSortCommandBuilder _bubbleBuilder = new BubbleSortCommandBuilder();
+    private readonly QuickSortCommandBuilder _quickSortBuilder = new();
+    private readonly BubbleSortCommandBuilder _bubbleSortBuilder = new();
 
-    private CommandPlayer? _player;
+    private SortPlaybackService? _playbackService;
     private CancellationTokenSource? _cts;
 
     [ObservableProperty]
@@ -33,25 +36,20 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private double speed = 1.0;
 
-
-    //KOSTYL` ZOSKIII,
-
-    partial void OnSpeedChanged(double value)
-    {
-        if (_player != null && IsPlaying)
-        {
-            Cancel();
-        }
-    }
-
-
     public MainViewModel(ISortItemGenerator generator)
     {
         _generator = generator;
     }
 
+    partial void OnSpeedChanged(double value)
+    {
+        if (_playbackService != null && IsPlaying)
+        {
+            _playbackService.Cancel();
+            _ = PlayAsync(); // Restart at new speed
+        }
+    }
 
-    //KOSTYL` ZOSKIII, 
     [RelayCommand]
     private void Generate(GenerateType type)
     {
@@ -65,101 +63,76 @@ public partial class MainViewModel : ObservableObject
             _ => _generator.GenerateRandom(),
         };
 
-        StartQuickSort();
+        StartQuickSort(); // Or switch to Bubble if preferred
     }
 
+    [RelayCommand]
+    private void StartQuickSort() => SetupSort(_quickSortBuilder.Build(Items));
 
+    [RelayCommand]
+    private void StartBubbleSort() => SetupSort(_bubbleSortBuilder.Build(Items));
+
+    private void SetupSort(IEnumerable<ISortCommand> commands)
+    {
+        Cancel();
+
+        _playbackService = new SortPlaybackService(commands);
+        _playbackService.OnStepChanged += step => CurrentStep = step;
+        _playbackService.OnPlayingChanged += playing => IsPlaying = playing;
+
+        CurrentStep = 0;
+        TotalSteps = _playbackService.TotalSteps;
+    }
 
     [RelayCommand]
     private void StepForward()
     {
-        if (_player == null) return;
-        _player.StepForward(Items);
-        CurrentStep = _player.CurrentStep;
+        _playbackService?.StepForward(Items);
     }
 
     [RelayCommand]
     private void StepBackward()
     {
-        if (_player == null) return;
-        _player.StepBackward(Items);
-        CurrentStep = _player.CurrentStep;
+        _playbackService?.StepBackward(Items);
     }
 
+    [RelayCommand]
     private async Task PlayAsync()
     {
-        if (_player == null || IsPlaying)
-            return;
+        if (_playbackService == null || IsPlaying) return;
 
         _cts = new CancellationTokenSource();
-        IsPlaying = true;
 
         try
         {
-            await _player.PlayAsync(Items, _cts.Token, Speed);
+            await _playbackService.PlayAsync(Items, Speed, _cts.Token);
         }
         catch (OperationCanceledException) { }
-        finally
-        {
-            IsPlaying = false;
-            CurrentStep = _player?.CurrentStep ?? 0;
-        }
-    }
-
-
-    [RelayCommand]
-    private void StartBubbleSort()
-    {
-        Cancel();
-        var commands = _bubbleBuilder.Build(Items);
-        _player = new CommandPlayer(commands, step => CurrentStep = step);
-        CurrentStep = 0;
-        TotalSteps = _player.TotalSteps;
-    }
-
-    private readonly QuickSortCommandBuilder _quickSortBuilder = new();
-
-    [RelayCommand]
-    private void StartQuickSort()
-    {
-        Cancel();
-        var commands = _quickSortBuilder.Build(Items);
-        _player = new CommandPlayer(commands, step => CurrentStep = step);
-        CurrentStep = 0;
-        TotalSteps = _player.TotalSteps;
     }
 
     [RelayCommand]
     private void TogglePlay()
     {
+        if (_playbackService == null) return;
+
         if (IsPlaying)
-        {
-            Cancel();
-        }
+            _playbackService.Cancel();
         else
-        {
             _ = PlayAsync();
-        }
     }
 
     [RelayCommand]
     private void JumpToStep(int index)
     {
-        if (_player == null) return;
-        _player.JumpToStep(index, Items);
-        CurrentStep = _player.CurrentStep;
+        _playbackService?.JumpToStep(index, Items);
     }
 
     private void Cancel()
     {
-        if (_cts is not null)
-        {
-            _cts.Cancel();
-            _cts.Dispose();
-            _cts = null;
-        }
+        _cts?.Cancel();
+        _cts?.Dispose();
+        _cts = null;
 
-        _player?.Pause();
-        IsPlaying = false;
+        _playbackService?.Cancel();
     }
 }
