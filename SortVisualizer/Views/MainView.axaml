@@ -10,6 +10,7 @@
     <UserControl.Resources>
         <converters:ColorStateConverter x:Key="ColorStateConverter" />
         <converters:StepFormatConverter x:Key="StepFormatConverter" />
+        <converters:BoolToTextConverter x:Key="BoolToTextConverter" />
 
     </UserControl.Resources>
 
@@ -38,7 +39,7 @@
             <ItemsControl ItemsSource="{Binding Items}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" />
+                        <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
 
@@ -47,17 +48,21 @@
                         <Border
                             Width="10"
                             Height="{Binding Value}"
-                            Margin="1">
+                            Margin="1"
+                            VerticalAlignment="Bottom">
+                            <!--  this helps too  -->
                             <Border.Background>
                                 <MultiBinding Converter="{StaticResource ColorStateConverter}">
                                     <Binding Path="IsSwapping" />
                                     <Binding Path="IsComparing" />
+                                    <Binding Path="IsPivot" />
                                 </MultiBinding>
                             </Border.Background>
                         </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
+
             <StackPanel
                 Margin="10"
                 HorizontalAlignment="Center"
@@ -92,9 +97,11 @@
                         </MultiBinding>
                     </TextBox.Text>
                 </TextBox>
-				<Button
-                    Command="{Binding PlayCommand}"
-                    Content="Play" />
+                <Button
+                    Command="{Binding TogglePlayCommand}"
+                    Content="{Binding IsPlaying, Converter={StaticResource BoolToTextConverter}}"
+                    IsEnabled="True" />
+
             </StackPanel>
         </StackPanel>
     </DockPanel>

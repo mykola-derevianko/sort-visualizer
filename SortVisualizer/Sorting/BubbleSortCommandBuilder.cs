@@ -1,10 +1,7 @@
 ﻿using SortVisualizer.Models;
 using SortVisualizer.Sorting.Commands;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SortVisualizer.Sorting
 {

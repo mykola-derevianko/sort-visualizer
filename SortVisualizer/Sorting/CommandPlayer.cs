@@ -3,7 +3,6 @@ using SortVisualizer.Sorting.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,6 +10,9 @@ namespace SortVisualizer.Sorting
 {
     public class CommandPlayer
     {
+        //Callback for step change
+        private readonly Action<int>? _onStepChanged;
+
         private readonly IList<ISortCommand> _commands;
         private int _currentIndex = -1;
         private bool _isPlaying = false;
@@ -18,9 +20,11 @@ namespace SortVisualizer.Sorting
         public int CurrentStep => _currentIndex + 1;
         public int TotalSteps => _commands.Count;
 
-        public CommandPlayer(IEnumerable<ISortCommand> commands)
+        public CommandPlayer(IEnumerable<ISortCommand> commands, Action<int>? onStepChanged = null)
         {
             _commands = commands.ToList();
+            _onStepChanged = onStepChanged;
+
         }
 
         public void StepForward(IList<SortItem> items)
@@ -29,6 +33,7 @@ namespace SortVisualizer.Sorting
             {
                 ClearAllHighlights(items);
                 _commands[++_currentIndex].Execute(items);
+                NotifyStepChanged();
             }
         }
 
@@ -43,36 +48,56 @@ namespace SortVisualizer.Sorting
 
                 if (_currentIndex >= 0)
                 {
-                    if (_commands[_currentIndex] is CompareCommand)
-                        _commands[_currentIndex].Execute(items);
+                    switch (_commands[_currentIndex])
+                    {
+                        case CompareCommand compare:
+                            compare.Execute(items);
+                            break;
+
+                        case SwapCommand swap:
+                            swap.Highlight(items);
+                            break;
+                    }
                 }
+                NotifyStepChanged();
             }
         }
+
 
         private void ClearAllHighlights(IList<SortItem> items)
         {
             foreach (var item in items)
             {
                 item.IsComparing = false;
+                item.IsSwapping = false;
             }
         }
+
 
 
         public async Task PlayAsync(IList<SortItem> items, CancellationToken token, double speedMultiplier)
         {
             _isPlaying = true;
 
-            while (_isPlaying && _currentIndex + 1 < _commands.Count)
+            try
             {
-                token.ThrowIfCancellationRequested();
+                while (_isPlaying && _currentIndex + 1 < _commands.Count)
+                {
+                    token.ThrowIfCancellationRequested();
 
-                StepForward(items);
+                    StepForward(items);
+                    _onStepChanged?.Invoke(CurrentStep);
 
-                await Task.Delay(TimeSpan.FromMilliseconds(200 / speedMultiplier), token);
+                    await Task.Delay(TimeSpan.FromMilliseconds(200 / speedMultiplier), token);
+                }
             }
-
-            _isPlaying = false;
+            catch (OperationCanceledException){}
+            finally
+            {
+                _isPlaying = false;
+            }
         }
+
 
         public void Pause() => _isPlaying = false;
 
@@ -83,6 +108,8 @@ namespace SortVisualizer.Sorting
             while (_currentIndex >= stepIndex)
                 StepBackward(items);
         }
+
+        private void NotifyStepChanged() => _onStepChanged?.Invoke(CurrentStep);
     }
 
 }

@@ -3,9 +3,6 @@ using Avalonia.Media;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SortVisualizer.Converters
 {
@@ -15,11 +12,14 @@ namespace SortVisualizer.Converters
         {
             bool isSwapping = values[0] is true;
             bool isComparing = values[1] is true;
+            bool isPivot = values[2] is true;
 
             if (isSwapping)
                 return Brushes.Red;
             if (isComparing)
                 return Brushes.Yellow;
+            if (isPivot)
+                return Brushes.Green;
 
             return Brushes.RoyalBlue;
         }

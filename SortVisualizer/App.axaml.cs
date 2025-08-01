@@ -5,8 +5,6 @@ using Avalonia.Markup.Xaml;
 using SortVisualizer.Services;
 using SortVisualizer.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
-using SortVisualizer;
-using SortVisualizer.ViewModels;
 namespace SortVisualizer;
 
 public partial class App : Application

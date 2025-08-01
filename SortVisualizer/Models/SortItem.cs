@@ -1,6 +1,4 @@
-﻿// Models/SortItem.cs
-
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SortVisualizer.Models
 {
@@ -14,6 +12,9 @@ namespace SortVisualizer.Models
 
         [ObservableProperty]
         private bool isSwapping;
+
+        [ObservableProperty]
+        private bool isPivot;
     }
 
 }

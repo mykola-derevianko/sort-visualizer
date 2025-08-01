@@ -4,12 +4,9 @@ using SortVisualizer.Sorting;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using static SortVisualizer.Services.SortItemGeneratorService;
 
 namespace SortVisualizer.ViewModels;
 
@@ -43,21 +40,9 @@ public partial class MainViewModel : ObservableObject
     {
         if (_player != null && IsPlaying)
         {
-            RestartPlayWithNewSpeed();
+            Cancel();
         }
     }
-
-    private async void RestartPlayWithNewSpeed()
-    {
-        _cts?.Cancel();
-        _cts?.Dispose();
-
-        await Task.Delay(50);
-
-        _cts = new CancellationTokenSource();
-        await PlayAsync();
-    }
-
 
 
     public MainViewModel(ISortItemGenerator generator)
@@ -80,7 +65,7 @@ public partial class MainViewModel : ObservableObject
             _ => _generator.GenerateRandom(),
         };
 
-        StartBubbleSort();
+        StartQuickSort();
     }
 
 
@@ -101,7 +86,6 @@ public partial class MainViewModel : ObservableObject
         CurrentStep = _player.CurrentStep;
     }
 
-    [RelayCommand]
     private async Task PlayAsync()
     {
         if (_player == null || IsPlaying)
@@ -122,19 +106,13 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
-    [RelayCommand]
-    private void Pause()
-    {
-        _player?.Pause();
-        IsPlaying = false;
-    }
 
     [RelayCommand]
     private void StartBubbleSort()
     {
         Cancel();
         var commands = _bubbleBuilder.Build(Items);
-        _player = new CommandPlayer(commands);
+        _player = new CommandPlayer(commands, step => CurrentStep = step);
         CurrentStep = 0;
         TotalSteps = _player.TotalSteps;
     }
@@ -146,11 +124,23 @@ public partial class MainViewModel : ObservableObject
     {
         Cancel();
         var commands = _quickSortBuilder.Build(Items);
-        _player = new CommandPlayer(commands);
+        _player = new CommandPlayer(commands, step => CurrentStep = step);
         CurrentStep = 0;
         TotalSteps = _player.TotalSteps;
     }
 
+    [RelayCommand]
+    private void TogglePlay()
+    {
+        if (IsPlaying)
+        {
+            Cancel();
+        }
+        else
+        {
+            _ = PlayAsync();
+        }
+    }
 
     [RelayCommand]
     private void JumpToStep(int index)

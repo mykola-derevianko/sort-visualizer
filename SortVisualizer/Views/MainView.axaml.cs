@@ -1,10 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Interactivity;
-using Avalonia.Logging;
 using SortVisualizer.ViewModels;
-using SortVisualizer.ViewModels;
-using System;
 
 namespace SortVisualizer.Views;
 

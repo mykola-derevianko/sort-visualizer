@@ -34,6 +34,8 @@ namespace SortVisualizer.Sorting
             int pivot = arr[high];
             int i = low - 1;
 
+            _commands.Add(new SetPivotCommand(high));
+
             for (int j = low; j < high; j++)
             {
                 _commands.Add(new CompareCommand(j, high));
@@ -43,9 +45,11 @@ namespace SortVisualizer.Sorting
                     i++;
                     if (i != j)
                     {
+                        _commands.Add(new CompareCommand(i, j));
                         _commands.Add(new SwapCommand(i, j));
                         (arr[i], arr[j]) = (arr[j], arr[i]);
                     }
+
                 }
             }
 
@@ -57,5 +61,6 @@ namespace SortVisualizer.Sorting
 
             return i + 1;
         }
+
     }
 }
