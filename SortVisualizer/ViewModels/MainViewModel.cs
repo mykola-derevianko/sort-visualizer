@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using SortVisualizer.Models;
 using SortVisualizer.Services;
 using SortVisualizer.Sorting;
-using SortVisualizer.Sorting.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,39 +13,32 @@ namespace SortVisualizer.ViewModels;
 
 public partial class MainViewModel : ObservableObject
 {
-    private readonly ISortItemGenerator _generator;
-    private readonly QuickSortCommandBuilder _quickSortBuilder = new();
-    private readonly BubbleSortCommandBuilder _bubbleSortBuilder = new();
-
-    private SortPlaybackService? _playbackService;
+    private readonly ISortManagerService _sortManager;
+    private CommandPlayer? _player;
     private CancellationTokenSource? _cts;
 
     [ObservableProperty]
     private ObservableCollection<SortItem> items = new();
 
-    [ObservableProperty]
-    private bool isPlaying;
+    [ObservableProperty] private bool isPlaying;
 
-    [ObservableProperty]
-    private int currentStep;
+    [ObservableProperty] private int currentStep;
 
-    [ObservableProperty]
-    private int totalSteps;
+    [ObservableProperty] private int totalSteps;
 
-    [ObservableProperty]
-    private double speed = 1.0;
+    [ObservableProperty] private double speed = 1.0;
 
-    public MainViewModel(ISortItemGenerator generator)
+    public MainViewModel(ISortManagerService sortManager)
     {
-        _generator = generator;
+        _sortManager = sortManager;
     }
 
     partial void OnSpeedChanged(double value)
     {
-        if (_playbackService != null && IsPlaying)
+        if (_player != null && IsPlaying)
         {
-            _playbackService.Cancel();
-            _ = PlayAsync(); // Restart at new speed
+            Cancel();
+            _ = PlayAsync(); // Restart playback at new speed
         }
     }
 
@@ -55,76 +47,77 @@ public partial class MainViewModel : ObservableObject
     {
         Cancel();
 
-        Items = type switch
-        {
-            GenerateType.Random => _generator.GenerateRandom(),
-            GenerateType.Reversed => _generator.GenerateReversed(),
-            GenerateType.NearlySorted => _generator.GenerateNearlySorted(),
-            _ => _generator.GenerateRandom(),
-        };
-
-        StartQuickSort(); // Or switch to Bubble if preferred
+        Items = _sortManager.GenerateItems(type);
+        StartSort(SortAlgorithm.QuickSort); // Default algorithm
     }
 
     [RelayCommand]
-    private void StartQuickSort() => SetupSort(_quickSortBuilder.Build(Items));
-
-    [RelayCommand]
-    private void StartBubbleSort() => SetupSort(_bubbleSortBuilder.Build(Items));
-
-    private void SetupSort(IEnumerable<ISortCommand> commands)
+    private void StartSort(SortAlgorithm algorithm)
     {
         Cancel();
 
-        _playbackService = new SortPlaybackService(commands);
-        _playbackService.OnStepChanged += step => CurrentStep = step;
-        _playbackService.OnPlayingChanged += playing => IsPlaying = playing;
+        _player = _sortManager.StartSort(Items, algorithm, step => CurrentStep = step);
 
         CurrentStep = 0;
-        TotalSteps = _playbackService.TotalSteps;
+        TotalSteps = _player.TotalSteps;
     }
 
     [RelayCommand]
     private void StepForward()
     {
-        _playbackService?.StepForward(Items);
+        _player?.StepForward(Items);
+        CurrentStep = _player?.CurrentStep ?? CurrentStep;
     }
 
     [RelayCommand]
     private void StepBackward()
     {
-        _playbackService?.StepBackward(Items);
+        _player?.StepBackward(Items);
+        CurrentStep = _player?.CurrentStep ?? CurrentStep;
     }
 
     [RelayCommand]
     private async Task PlayAsync()
     {
-        if (_playbackService == null || IsPlaying) return;
+        if (_player == null || IsPlaying)
+            return;
 
         _cts = new CancellationTokenSource();
+        IsPlaying = true;
 
         try
         {
-            await _playbackService.PlayAsync(Items, Speed, _cts.Token);
+            await _player.PlayAsync(Items, _cts.Token, Speed);
         }
-        catch (OperationCanceledException) { }
+        catch (OperationCanceledException){}
+        finally
+        {
+            IsPlaying = false;
+            CurrentStep = _player?.CurrentStep ?? 0;
+        }
     }
 
     [RelayCommand]
     private void TogglePlay()
     {
-        if (_playbackService == null) return;
+        if (_player == null)
+            return;
 
         if (IsPlaying)
-            _playbackService.Cancel();
+        {
+            Cancel();
+        }
         else
+        {
             _ = PlayAsync();
+        }
     }
 
     [RelayCommand]
     private void JumpToStep(int index)
     {
-        _playbackService?.JumpToStep(index, Items);
+        _player?.JumpToStep(index, Items);
+        CurrentStep = _player?.CurrentStep ?? CurrentStep;
     }
 
     private void Cancel()
@@ -133,6 +126,7 @@ public partial class MainViewModel : ObservableObject
         _cts?.Dispose();
         _cts = null;
 
-        _playbackService?.Cancel();
+        _player?.Pause();
+        IsPlaying = false;
     }
 }

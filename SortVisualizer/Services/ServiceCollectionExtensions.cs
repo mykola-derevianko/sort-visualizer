@@ -8,6 +8,7 @@ namespace SortVisualizer.Services
         public static void AddCommonServices(this IServiceCollection collection)
         {
             collection.AddTransient<ISortItemGenerator, SortItemGeneratorService>();
+            collection.AddSingleton<ISortManagerService, SortManagerService>();
             collection.AddTransient<MainViewModel>();
         }
     }
