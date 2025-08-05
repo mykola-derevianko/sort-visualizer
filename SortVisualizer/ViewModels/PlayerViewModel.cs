@@ -64,11 +64,20 @@ public partial class PlayerViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void StepForward()
+    private async Task StepForward()
     {
-        _player?.StepForward(Items);
-        CurrentStep = _player?.CurrentStep ?? CurrentStep;
+        if (_player == null)
+            return;
+
+        _player.StepForward(Items);
+        CurrentStep = _player.CurrentStep;
+
+        if (CurrentStep == _player.TotalSteps)
+        {
+            await PlayFinishAnimationAsync();
+        }
     }
+
 
     [RelayCommand]
     private void StepBackward()
@@ -89,6 +98,7 @@ public partial class PlayerViewModel : ObservableObject
         try
         {
             await _player.PlayAsync(Items, _cts.Token, Speed);
+            await PlayFinishAnimationAsync();
         }
         catch (OperationCanceledException){}
         finally
@@ -130,4 +140,26 @@ public partial class PlayerViewModel : ObservableObject
         _player?.Pause();
         IsPlaying = false;
     }
+
+    private async Task PlayFinishAnimationAsync()
+    {
+        foreach (var item in Items) {
+            item.IsPivot = false;
+            item.IsComparing = false;
+            item.IsSwapping = false;
+        }
+        foreach (var item in Items)
+        {
+            foreach (var i in Items)
+                i.IsPivot = false;
+
+            item.IsPivot = true;
+            await Task.Delay(30);
+        }
+
+        foreach (var item in Items)
+            item.IsPivot = false;
+    }
+
+
 }

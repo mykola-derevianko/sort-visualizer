@@ -9,4 +9,10 @@
         <FluentTheme />
         <StyleInclude Source="avares://SortVisualizer/Styles/Styles.axaml" />
     </Application.Styles>
+
+
+    <Application.Resources>
+        <SolidColorBrush x:Key="PrimaryBackground">#2D2D2D</SolidColorBrush>
+        <SolidColorBrush x:Key="SecondaryBackground">#272727</SolidColorBrush>
+    </Application.Resources>
 </Application>

@@ -41,5 +41,49 @@
 
 
 
+    <!--  Sidebar  -->
+
+    <Style Selector="Border.sidebar">
+        <Setter Property="Padding" Value="0,37,0,0" />
+
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="Background" Value="{DynamicResource SecondaryBackground}" />
+    </Style>
+    <Style Selector="Border.sidebar > StackPanel">
+
+        <Setter Property="HorizontalAlignment" Value="Center" />
+
+    </Style>
+
+
+
+    <!--  Sidebar Buttons  -->
+    <Style Selector="Button.sidebar-buttons">
+
+        <Setter Property="FontSize" Value="36" />
+        <Setter Property="Foreground" Value="#b5b5b5" />
+
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Margin" Value="5" />
+        <Setter Property="Padding" Value="30,0,0,0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+
+        <Setter Property="Height" Value="100" />
+        <Setter Property="Width" Value="355" />
+        <Setter Property="CornerRadius" Value="42" />
+
+    </Style>
+
+    <Style Selector="Button.sidebar-buttons:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="#454545" />
+        <Setter Property="Foreground" Value="#ffffff" />
+
+    </Style>
+
+
+
 
 </Styles>
