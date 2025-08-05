@@ -13,7 +13,7 @@ namespace SortVisualizer.Services
         {
             var items = new ObservableCollection<SortItem>();
             for (int i = 0; i < 50; i++)
-                items.Add(new SortItem { Value = _random.Next(10, 300) });
+                items.Add(new SortItem { Value = _random.Next(10, 500) });
             return items;
         }
 
@@ -21,7 +21,7 @@ namespace SortVisualizer.Services
         {
             var items = new ObservableCollection<SortItem>();
             for (int i = 0; i < 50; i++)
-                items.Add(new SortItem { Value = 300 - i * 5 });
+                items.Add(new SortItem { Value = 500 - i * 5 });
             return items;
         }
 

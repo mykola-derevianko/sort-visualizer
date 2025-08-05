@@ -1,0 +1,112 @@
+﻿<UserControl
+    x:Class="SortVisualizer.Views.PlayerView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:SortVisualizer.Converters"
+    xmlns:models="clr-namespace:SortVisualizer.Models"
+    xmlns:viewmodels="clr-namespace:SortVisualizer.ViewModels"
+    x:DataType="viewmodels:PlayerViewModel"
+    Classes="player">
+
+    <UserControl.Resources>
+        <converters:ColorStateConverter x:Key="ColorStateConverter" />
+        <converters:StepFormatConverter x:Key="StepFormatConverter" />
+        <converters:BoolToTextConverter x:Key="BoolToTextConverter" />
+        <converters:PositiveNumberToBoolConverter x:Key="PositiveNumberToBoolConverter" />
+    </UserControl.Resources>
+
+
+
+    <Border
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        Classes="player-container">
+        <StackPanel>
+
+            <!--  Sort visualization  -->
+            <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Items}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="models:SortItem">
+                        <Border
+                            Width="22"
+                            Height="{Binding Value}"
+                            Margin="1"
+                            VerticalAlignment="Bottom"
+                            Classes="sort-item"
+                            CornerRadius="5">
+                            <Border.Background>
+                                <MultiBinding Converter="{StaticResource ColorStateConverter}">
+                                    <Binding Path="IsSwapping" />
+                                    <Binding Path="IsComparing" />
+                                    <Binding Path="IsPivot" />
+                                </MultiBinding>
+                            </Border.Background>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <Border Classes="border-playback-panel">
+                <!--  Bottom bar  -->
+                <StackPanel
+                    Classes="playback-panel"
+                    DockPanel.Dock="Bottom"
+                    Orientation="Horizontal">
+
+                    <TextBlock
+                        Width="50"
+                        VerticalAlignment="Center"
+                        Text="{Binding Speed, StringFormat={}{0}x}" />
+                    <Slider
+                        Width="120"
+                        IsSnapToTickEnabled="True"
+                        Maximum="2"
+                        Minimum="0.25"
+                        TickFrequency="0.25"
+                        Value="{Binding Speed, Mode=TwoWay}" />
+
+                    <Button
+                        Width="40"
+                        Height="30"
+                        Command="{Binding StepBackwardCommand}"
+                        Content="⏮" />
+                    <Button
+                        Width="60"
+                        Height="30"
+                        Command="{Binding TogglePlayCommand}"
+                        Content="{Binding IsPlaying, Converter={StaticResource BoolToTextConverter}}" />
+                    <Button
+                        Width="40"
+                        Height="30"
+                        Command="{Binding StepForwardCommand}"
+                        Content="⏭" />
+
+                    <Slider
+                        Name="ProgressSlider"
+                        Width="200"
+                        IsEnabled="{Binding TotalSteps, Converter={StaticResource PositiveNumberToBoolConverter}}"
+                        IsSnapToTickEnabled="True"
+                        Maximum="{Binding TotalSteps}"
+                        Minimum="0"
+                        PointerCaptureLost="ProgressSlider_PointerCaptureLost"
+                        TickFrequency="1"
+                        Value="{Binding CurrentStep, Mode=TwoWay}" />
+
+                    <TextBlock
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Text="{Binding CurrentStep, StringFormat='Step: {0}'}" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </Border>
+</UserControl>

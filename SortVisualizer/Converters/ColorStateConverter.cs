@@ -8,6 +8,8 @@ namespace SortVisualizer.Converters
 {
     public class ColorStateConverter : IMultiValueConverter
     {
+        private static readonly SolidColorBrush DefaultBrush = new SolidColorBrush(Color.Parse("#D2D2D2"));
+
         public object Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
         {
             bool isSwapping = values[0] is true;
@@ -21,8 +23,7 @@ namespace SortVisualizer.Converters
             if (isPivot)
                 return Brushes.Green;
 
-            return Brushes.RoyalBlue;
+            return DefaultBrush;
         }
     }
-
 }

@@ -1,0 +1,45 @@
+<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--  Common Button Style  -->
+    <Style Selector="Button">
+        <Setter Property="Background" Value="#3A3A3A" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="BorderBrush" Value="#555" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="Padding" Value="8,4" />
+        <Setter Property="FontSize" Value="14" />
+    </Style>
+
+    <!--  TextBlock  -->
+    <Style Selector="TextBlock">
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+
+    <!--  Playback Panel  -->
+    <Style Selector="StackPanel.playback-panel">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+    </Style>
+
+    <Style Selector="Border.player-container">
+        <Setter Property="Padding" Value="20" />
+        <Setter Property="Background" Value="#1C1C1C" />
+        <Setter Property="Width" Value="1300" />
+        <Setter Property="Height" Value="640" />
+        <Setter Property="CornerRadius" Value="33" />
+    </Style>
+
+    <Style Selector="Border.border-playback-panel">
+        <Setter Property="Background" Value="#252525" />
+        <Setter Property="Margin" Value="0,30,0,0" />
+        <Setter Property="Padding" Value="15,0,0,0" />
+        <Setter Property="CornerRadius" Value="10" />
+    </Style>
+
+    <Style Selector="Border.player-container > StackPanel">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+    </Style>
+
+
+
+
+</Styles>

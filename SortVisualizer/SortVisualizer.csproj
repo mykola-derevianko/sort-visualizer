@@ -23,8 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\MainView.axaml.cs">
-      <DependentUpon>MainView.axaml</DependentUpon>
+    <Compile Update="Views\PlayerView.axaml.cs">
+      <DependentUpon>PlayerView.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
+
 </Project>

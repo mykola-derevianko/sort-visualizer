@@ -1,108 +1,41 @@
-﻿<UserControl
+<UserControl
     x:Class="SortVisualizer.Views.MainView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converters="clr-namespace:SortVisualizer.Converters"
-    xmlns:models="clr-namespace:SortVisualizer.Models"
     xmlns:viewmodels="clr-namespace:SortVisualizer.ViewModels"
-    x:DataType="viewmodels:MainViewModel">
+    xmlns:views="clr-namespace:SortVisualizer.Views"
+    x:DataType="viewmodels:MainViewModel"
+    Classes="main-view">
 
-    <UserControl.Resources>
-        <converters:ColorStateConverter x:Key="ColorStateConverter" />
-        <converters:StepFormatConverter x:Key="StepFormatConverter" />
-        <converters:BoolToTextConverter x:Key="BoolToTextConverter" />
+    <Grid Background="#272727" ColumnDefinitions="2*,8*">
+        <Border
+            Grid.Column="0"
+            Padding="20"
+            Background="#2D2D2D">
+            <StackPanel>
+                <TextBlock
+                    Height="48"
+                    Margin="0,0,0,20"
+                    FontSize="32"
+                    FontWeight="Bold"
+                    Text="Sidebar" />
 
-    </UserControl.Resources>
-
-    <DockPanel Margin="10">
-
-        <StackPanel
-            Margin="0,0,0,10"
-            HorizontalAlignment="Center"
-            DockPanel.Dock="Top"
-            Orientation="Horizontal">
-            <Button
-                Command="{Binding GenerateCommand}"
-                CommandParameter="{x:Static models:GenerateType.Random}"
-                Content="GenerateRandom" />
-            <Button
-                Command="{Binding GenerateCommand}"
-                CommandParameter="{x:Static models:GenerateType.Reversed}"
-                Content="GenerateReversed" />
-            <Button
-                Command="{Binding GenerateCommand}"
-                CommandParameter="{x:Static models:GenerateType.NearlySorted}"
-                Content="GenerateNearlySorted" />
-        </StackPanel>
-
-        <StackPanel>
-            <ItemsControl ItemsSource="{Binding Items}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate x:DataType="models:SortItem">
-                        <Border
-                            Width="10"
-                            Height="{Binding Value}"
-                            Margin="1"
-                            VerticalAlignment="Bottom">
-                            <!--  this helps too  -->
-                            <Border.Background>
-                                <MultiBinding Converter="{StaticResource ColorStateConverter}">
-                                    <Binding Path="IsSwapping" />
-                                    <Binding Path="IsComparing" />
-                                    <Binding Path="IsPivot" />
-                                </MultiBinding>
-                            </Border.Background>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-
-            <StackPanel
-                Margin="10"
-                HorizontalAlignment="Center"
-                Orientation="Vertical">
-                <TextBlock Text="{Binding Speed, StringFormat='Speed: {0}x'}" />
-                <Slider
-                    IsSnapToTickEnabled="True"
-                    Maximum="2.0"
-                    Minimum="0.25"
-                    TickFrequency="0.25"
-                    Value="{Binding Speed, Mode=TwoWay}" />
-
-                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                    <Button Command="{Binding StepBackwardCommand}" Content="⏮" />
-                    <Button Command="{Binding StepForwardCommand}" Content="⏭" />
-                </StackPanel>
-
-
-                <Slider
-                    Name="ProgressSlider"
-                    IsSnapToTickEnabled="True"
-                    Maximum="{Binding TotalSteps, Mode=TwoWay}"
-                    Minimum="0"
-                    PointerCaptureLost="ProgressSlider_PointerCaptureLost"
-                    TickFrequency="1"
-                    Value="{Binding CurrentStep, Mode=TwoWay}" />
-                <TextBox IsReadOnly="True">
-                    <TextBox.Text>
-                        <MultiBinding Converter="{StaticResource StepFormatConverter}">
-                            <Binding Path="CurrentStep" />
-                            <Binding Path="TotalSteps" />
-                        </MultiBinding>
-                    </TextBox.Text>
-                </TextBox>
                 <Button
-                    Command="{Binding TogglePlayCommand}"
-                    Content="{Binding IsPlaying, Converter={StaticResource BoolToTextConverter}}"
-                    IsEnabled="True" />
-
+                    Height="48"
+                    Margin="0,0,0,10"
+                    Content="Option 1" />
+                <Button
+                    Height="48"
+                    Margin="0,0,0,10"
+                    Content="Option 2" />
+                <Button Height="48" Content="Option 3" />
             </StackPanel>
-        </StackPanel>
-    </DockPanel>
+        </Border>
+
+        <Grid Grid.Column="1" RowDefinitions="7*,3*">
+            <views:PlayerView Grid.Row="0" DataContext="{Binding Player}" />
+            <Border Grid.Row="1" Background="#272727" />
+        </Grid>
+
+    </Grid>
 </UserControl>

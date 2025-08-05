@@ -9,7 +9,7 @@ namespace SortVisualizer.Services
         {
             collection.AddTransient<ISortItemGenerator, SortItemGeneratorService>();
             collection.AddSingleton<ISortManagerService, SortManagerService>();
-            collection.AddTransient<MainViewModel>();
+            collection.AddTransient<PlayerViewModel>();
         }
     }
 }
