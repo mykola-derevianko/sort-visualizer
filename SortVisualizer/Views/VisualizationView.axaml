@@ -1,0 +1,13 @@
+<UserControl
+    x:Class="SortVisualizer.Views.VisualizationView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:viewmodels="clr-namespace:SortVisualizer.ViewModels"
+    xmlns:views="clr-namespace:SortVisualizer.Views"
+    x:DataType="viewmodels:VisualizationViewModel">
+
+    <Grid RowDefinitions="7*,3*">
+        <views:PlayerView Grid.Row="0" DataContext="{Binding Player}" />
+        <Border Grid.Row="1" Padding="10" />
+    </Grid>
+</UserControl>

@@ -6,9 +6,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:views="clr-namespace:SortVisualizer.Views"
     Title="SortVisualizer"
+    Width="1920"
+    Height="1080"
     Background="Black"
     mc:Ignorable="d">
 
-    <views:MainView/>
+    <views:MainView Background="{DynamicResource PrimaryBackground}"/>
 
 </Window>

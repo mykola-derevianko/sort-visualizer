@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="clr-namespace:SortVisualizer.Converters"
     xmlns:models="clr-namespace:SortVisualizer.Models"
+    xmlns:svg="clr-namespace:Svg.Controls.Skia.Avalonia;assembly=Svg.Controls.Skia.Avalonia"
     xmlns:viewmodels="clr-namespace:SortVisualizer.ViewModels"
     x:DataType="viewmodels:PlayerViewModel"
     Classes="player">
@@ -74,21 +75,28 @@
                         TickFrequency="0.25"
                         Value="{Binding Speed, Mode=TwoWay}" />
 
-                    <Button
-                        Width="40"
-                        Height="30"
-                        Command="{Binding StepBackwardCommand}"
-                        Content="⏮" />
-                    <Button
-                        Width="60"
-                        Height="30"
-                        Command="{Binding TogglePlayCommand}"
-                        Content="{Binding IsPlaying, Converter={StaticResource BoolToTextConverter}}" />
-                    <Button
-                        Width="40"
-                        Height="30"
-                        Command="{Binding StepForwardCommand}"
-                        Content="⏭" />
+                    <Button Classes="controll-buttons" Command="{Binding StepBackwardCommand}">
+                        <Svg
+                            Width="30"
+                            Height="30"
+                            Path="/Assets/Icons/step-backward.svg" />
+                    </Button>
+
+                    <Button Classes="controll-buttons" Command="{Binding TogglePlayCommand}">
+                        <Svg
+                            Width="30"
+                            Height="30"
+                            Path="/Assets/Icons/play.svg"
+                            Stretch="Uniform" />
+                    </Button>
+
+                    <Button Classes="controll-buttons" Command="{Binding StepForwardCommand}">
+                        <Svg
+                            Width="30"
+                            Height="30"
+                            Path="/Assets/Icons/step-forward.svg" />
+                    </Button>
+
 
                     <Slider
                         Name="ProgressSlider"

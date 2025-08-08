@@ -1,0 +1,12 @@
+<UserControl
+    x:Class="SortVisualizer.Views.AlgorithmInfoView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:viewmodels="clr-namespace:SortVisualizer.ViewModels"
+    x:DataType="viewmodels:AlgorithmInfoViewModel">
+
+    <StackPanel Margin="20" Background="{DynamicResource PrimaryBackground}">
+        <TextBlock Margin="0,10,0,20" Text="Details about algorithm go here..." />
+        <Button Command="{Binding VisualizeCommand}" Content="Visualize" />
+    </StackPanel>
+</UserControl>

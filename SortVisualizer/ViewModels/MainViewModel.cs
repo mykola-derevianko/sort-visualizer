@@ -1,15 +1,33 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using SortVisualizer.ViewModels;
+using CommunityToolkit.Mvvm.Input;
+using SortVisualizer.Models;
+using System;
 
 namespace SortVisualizer.ViewModels;
 
-public class MainViewModel : ObservableObject
+public partial class MainViewModel : ObservableObject
 {
-    public PlayerViewModel Player { get; }
+    [ObservableProperty]
+    private object? currentViewModel;
 
-    public MainViewModel(PlayerViewModel player)
+    private readonly Func<SortAlgorithm, VisualizationViewModel> _visualizationFactory;
+
+    public MainViewModel(Func<SortAlgorithm, VisualizationViewModel> visualizationFactory)
     {
-        Player = player;
+        _visualizationFactory = visualizationFactory;
+
+        // Show initial info page
+        CurrentViewModel = new AlgorithmInfoViewModel(SortAlgorithm.BubbleSort, this);
+    }
+
+    [RelayCommand]
+    private void ShowSortInfo(SortAlgorithm algorithm)
+    {
+        CurrentViewModel = new AlgorithmInfoViewModel(algorithm, this);
+    }
+
+    public void ShowVisualization(SortAlgorithm algorithm)
+    {
+        CurrentViewModel = _visualizationFactory(algorithm);
     }
 }
-

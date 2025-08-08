@@ -2,8 +2,9 @@
     x:Class="SortVisualizer.App"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:localViews="clr-namespace:SortVisualizer.Views"
+    xmlns:viewmodels="clr-namespace:SortVisualizer.ViewModels"
     RequestedThemeVariant="Default">
-    <!--  "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options.  -->
 
     <Application.Styles>
         <FluentTheme />
@@ -11,8 +12,21 @@
     </Application.Styles>
 
 
+    <Application.DataTemplates>
+        <DataTemplate DataType="viewmodels:AlgorithmInfoViewModel">
+            <localViews:AlgorithmInfoView />
+        </DataTemplate>
+        <DataTemplate DataType="viewmodels:VisualizationViewModel">
+            <localViews:VisualizationView />
+        </DataTemplate>
+    </Application.DataTemplates>
+
     <Application.Resources>
+
         <SolidColorBrush x:Key="PrimaryBackground">#2D2D2D</SolidColorBrush>
         <SolidColorBrush x:Key="SecondaryBackground">#272727</SolidColorBrush>
     </Application.Resources>
+
+
+
 </Application>

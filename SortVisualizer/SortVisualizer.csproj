@@ -20,6 +20,7 @@
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.7" />
+    <PackageReference Include="Svg.Controls.Skia.Avalonia" Version="11.3.0.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,5 +28,9 @@
       <DependentUpon>PlayerView.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
+	<ItemGroup>
+		<AvaloniaResource Include="Assets\Icons\*.svg" />
+	</ItemGroup>
+
 
 </Project>

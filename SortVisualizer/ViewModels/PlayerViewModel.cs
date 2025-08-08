@@ -4,7 +4,6 @@ using SortVisualizer.Models;
 using SortVisualizer.Services;
 using SortVisualizer.Sorting;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,6 +13,7 @@ namespace SortVisualizer.ViewModels;
 public partial class PlayerViewModel : ObservableObject
 {
     private readonly ISortManagerService _sortManager;
+    private readonly SortAlgorithm _sortAlgorithm;
     private CommandPlayer? _player;
     private CancellationTokenSource? _cts;
 
@@ -28,10 +28,11 @@ public partial class PlayerViewModel : ObservableObject
 
     [ObservableProperty] private double speed = 1.0;
 
-    public PlayerViewModel(ISortManagerService sortManager)
+    public PlayerViewModel(ISortManagerService sortManager, SortAlgorithm algorithm)
     {
         _sortManager = sortManager;
-        Generate(GenerateType.Random);
+        _sortAlgorithm = algorithm;
+        Generate(GenerateType.Random, algorithm);
     }
 
     partial void OnSpeedChanged(double value)
@@ -39,17 +40,16 @@ public partial class PlayerViewModel : ObservableObject
         if (_player != null && IsPlaying)
         {
             Cancel();
-            _ = PlayAsync(); // Restart playback at new speed
+            _ = PlayAsync();
         }
     }
 
-    [RelayCommand]
-    private void Generate(GenerateType type)
+    private void Generate(GenerateType type, SortAlgorithm algorithm)
     {
         Cancel();
 
         Items = _sortManager.GenerateItems(type);
-        StartSort(SortAlgorithm.QuickSort); // Default algorithm
+        StartSort(algorithm); // Default algorithm
     }
 
     [RelayCommand]
@@ -98,7 +98,11 @@ public partial class PlayerViewModel : ObservableObject
         try
         {
             await _player.PlayAsync(Items, _cts.Token, Speed);
-            await PlayFinishAnimationAsync();
+            if(_player.CurrentStep == _player.TotalSteps)
+            {
+                await PlayFinishAnimationAsync();
+            }
+            
         }
         catch (OperationCanceledException){}
         finally

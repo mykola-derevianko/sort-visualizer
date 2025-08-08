@@ -28,7 +28,6 @@ public partial class App : Application
         collection.AddCommonServices();
 
         // Register ViewModels
-        collection.AddSingleton<PlayerViewModel>();
         collection.AddSingleton<MainViewModel>();
 
         var services = collection.BuildServiceProvider();

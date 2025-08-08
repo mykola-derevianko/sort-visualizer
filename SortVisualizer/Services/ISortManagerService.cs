@@ -15,10 +15,4 @@ namespace SortVisualizer.Services
         CommandPlayer StartSort(ObservableCollection<SortItem> items, SortAlgorithm algorithm, Action<int>? onStepChanged);
     }
 
-    public enum SortAlgorithm
-    {
-        BubbleSort,
-        QuickSort,
-    }
-
 }

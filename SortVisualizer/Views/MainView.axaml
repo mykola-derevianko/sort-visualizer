@@ -2,28 +2,44 @@
     x:Class="SortVisualizer.Views.MainView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:localViews="clr-namespace:SortVisualizer.Views"
+    xmlns:models="clr-namespace:SortVisualizer.Models"
     xmlns:viewmodels="clr-namespace:SortVisualizer.ViewModels"
     xmlns:views="clr-namespace:SortVisualizer.Views"
-    x:DataType="viewmodels:MainViewModel"
-    Classes="main-view">
+    x:DataType="viewmodels:MainViewModel">
+
 
     <Grid Background="{DynamicResource PrimaryBackground}" ColumnDefinitions="2*,8*">
-
-        <!--  Sidebar (left column)  -->
+        <!--  Sidebar  -->
         <Border Grid.Column="0" Classes="sidebar">
             <StackPanel>
-                <Button Classes="sidebar-buttons" Content="Bubble sort" />
-                <Button Classes="sidebar-buttons" Content="Quick sort" />
-                <Button Classes="sidebar-buttons" Content="Insertion Sort" />
-                <Button Classes="sidebar-buttons" Content="Selection Sort" />
+                <Button
+                    Classes="sidebar-button"
+                    Command="{Binding ShowSortInfoCommand}"
+                    CommandParameter="{x:Static models:SortAlgorithm.BubbleSort}"
+                    Content="Bubble Sort" />
+
+                <Button
+                    Classes="sidebar-button"
+                    Command="{Binding ShowSortInfoCommand}"
+                    CommandParameter="{x:Static models:SortAlgorithm.QuickSort}"
+                    Content="Quick Sort" />
+
+                <Button
+                    Classes="sidebar-button"
+                    Command="{Binding ShowSortInfoCommand}"
+                    CommandParameter="{x:Static models:SortAlgorithm.InsertionSort}"
+                    Content="Insertion Sort" />
+
+                <Button
+                    Classes="sidebar-button"
+                    Command="{Binding ShowSortInfoCommand}"
+                    CommandParameter="{x:Static models:SortAlgorithm.SelectionSort}"
+                    Content="Selection Sort" />
             </StackPanel>
         </Border>
 
-        <!--  Main content area  -->
-        <Grid Grid.Column="1" RowDefinitions="7*,3*">
-            <views:PlayerView Grid.Row="0" DataContext="{Binding Player}" />
-            <Border Grid.Row="1" Background="{DynamicResource PrimaryBackground}" />
-        </Grid>
-
+        <!--  Dynamic main content  -->
+        <ContentControl Grid.Column="1" Content="{Binding CurrentViewModel}" />
     </Grid>
 </UserControl>
