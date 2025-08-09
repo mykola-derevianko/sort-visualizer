@@ -27,7 +27,10 @@ public partial class PlayerViewModel : ObservableObject
     [ObservableProperty] private int totalSteps;
 
     [ObservableProperty] private double speed = 1.0;
+    [ObservableProperty]
+    private bool isMenuOpen;
 
+    
     public PlayerViewModel(ISortManagerService sortManager, SortAlgorithm algorithm)
     {
         _sortManager = sortManager;
@@ -61,6 +64,12 @@ public partial class PlayerViewModel : ObservableObject
 
         CurrentStep = 0;
         TotalSteps = _player.TotalSteps;
+    }
+
+    [RelayCommand]
+    private void ToggleMenu()
+    {
+        IsMenuOpen = !IsMenuOpen;
     }
 
     [RelayCommand]
@@ -134,6 +143,10 @@ public partial class PlayerViewModel : ObservableObject
         _player?.JumpToStep(index, Items);
         CurrentStep = _player?.CurrentStep ?? CurrentStep;
     }
+
+    //Settings commands
+    [RelayCommand]
+
 
     private void Cancel()
     {

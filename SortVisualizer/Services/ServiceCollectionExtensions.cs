@@ -10,7 +10,7 @@ namespace SortVisualizer.Services
         public static void AddCommonServices(this IServiceCollection collection)
         {
             collection.AddTransient<ISortItemGenerator, SortItemGeneratorService>();
-            collection.AddSingleton<ISortManagerService, SortManagerService>();
+            collection.AddTransient<ISortManagerService, SortManagerService>();
 
             // Player factory
             collection.AddTransient<Func<SortAlgorithm, PlayerViewModel>>(provider =>

@@ -17,44 +17,60 @@
     </UserControl.Resources>
 
 
-
     <Border
         HorizontalAlignment="Center"
         VerticalAlignment="Center"
         Classes="player-container">
         <StackPanel>
+            <Grid DockPanel.Dock="Top">
+                <ItemsControl ItemsSource="{Binding Items}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Bottom"
+                                Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
 
-            <!--  Sort visualization  -->
-            <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Items}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Bottom"
-                            Orientation="Horizontal" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="models:SortItem">
+                            <Border
+                                Width="22"
+                                Height="{Binding Value}"
+                                Margin="1"
+                                VerticalAlignment="Bottom"
+                                Classes="sort-item"
+                                CornerRadius="5">
+                                <Border.Background>
+                                    <MultiBinding Converter="{StaticResource ColorStateConverter}">
+                                        <Binding Path="IsSwapping" />
+                                        <Binding Path="IsComparing" />
+                                        <Binding Path="IsPivot" />
+                                    </MultiBinding>
+                                </Border.Background>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
 
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate x:DataType="models:SortItem">
-                        <Border
-                            Width="22"
-                            Height="{Binding Value}"
-                            Margin="1"
-                            VerticalAlignment="Bottom"
-                            Classes="sort-item"
-                            CornerRadius="5">
-                            <Border.Background>
-                                <MultiBinding Converter="{StaticResource ColorStateConverter}">
-                                    <Binding Path="IsSwapping" />
-                                    <Binding Path="IsComparing" />
-                                    <Binding Path="IsPivot" />
-                                </MultiBinding>
-                            </Border.Background>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                <!--  Popup lives here, so it shows over ItemsControl  -->
+                <Popup
+                    Classes="popup-settings"
+                    IsOpen="{Binding IsMenuOpen, Mode=TwoWay}"
+                    PlacementTarget="{Binding ElementName=MenuButton}">
+                    <Border
+                        Padding="8"
+                        Background=""
+                        CornerRadius="6">
+                        <StackPanel>
+                            <Button>Randomize</Button>
+							<Button>Many Duplicates</Button>
+							<Button>Nearrly Sorted</Button>
+                        </StackPanel>
+                    </Border>
+                </Popup>
+            </Grid>
 
             <Border Classes="border-playback-panel">
                 <!--  Bottom bar  -->
@@ -75,7 +91,10 @@
                         TickFrequency="0.25"
                         Value="{Binding Speed, Mode=TwoWay}" />
 
-                    <Button Classes="controll-buttons" Command="{Binding StepBackwardCommand}">
+                    <Button
+                        Margin="20,0,0,0"
+                        Classes="controll-buttons"
+                        Command="{Binding StepBackwardCommand}">
                         <Svg
                             Width="30"
                             Height="30"
@@ -100,19 +119,28 @@
 
                     <Slider
                         Name="ProgressSlider"
-                        Width="200"
+                        Classes="control-slider"
                         IsEnabled="{Binding TotalSteps, Converter={StaticResource PositiveNumberToBoolConverter}}"
-                        IsSnapToTickEnabled="True"
                         Maximum="{Binding TotalSteps}"
                         Minimum="0"
                         PointerCaptureLost="ProgressSlider_PointerCaptureLost"
-                        TickFrequency="1"
                         Value="{Binding CurrentStep, Mode=TwoWay}" />
 
                     <TextBlock
                         Margin="5,0,0,0"
                         VerticalAlignment="Center"
                         Text="{Binding CurrentStep, StringFormat='Step: {0}'}" />
+
+                    <Button
+                        x:Name="MenuButton"
+                        Margin="10,0,0,0"
+                        Classes="controll-buttons"
+                        Command="{Binding ToggleMenuCommand}">
+                        <Svg
+                            Width="25"
+                            Height="25"
+                            Path="/Assets/Icons/settings.svg" />
+                    </Button>
                 </StackPanel>
             </Border>
         </StackPanel>

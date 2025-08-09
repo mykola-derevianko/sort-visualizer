@@ -11,6 +11,6 @@
     Background="Black"
     mc:Ignorable="d">
 
-    <views:MainView Background="{DynamicResource PrimaryBackground}"/>
+    <views:MainView Background="{DynamicResource PrimaryBackground}" />
 
 </Window>
