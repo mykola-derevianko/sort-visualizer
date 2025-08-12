@@ -15,6 +15,15 @@ namespace SortVisualizer.Models
 
         [ObservableProperty]
         private bool isPivot;
+        public SortItem() { }
+
+        public SortItem(SortItem other)
+        {
+            Value = other.Value;
+            IsComparing = other.IsComparing;
+            IsSwapping = other.IsSwapping;
+            IsPivot = other.IsPivot;
+        }
     }
 
 }

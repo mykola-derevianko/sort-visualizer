@@ -5,6 +5,7 @@ using SortVisualizer.Services;
 using SortVisualizer.Sorting;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,8 +13,10 @@ namespace SortVisualizer.ViewModels;
 
 public partial class PlayerViewModel : ObservableObject
 {
-    private readonly ISortManagerService _sortManager;
+    private readonly SortManagerService _sortManager;
     private readonly SortAlgorithm _sortAlgorithm;
+    public SettingsPopupViewModel settingsPopupVM { get; }
+
     private CommandPlayer? _player;
     private CancellationTokenSource? _cts;
 
@@ -27,14 +30,28 @@ public partial class PlayerViewModel : ObservableObject
     [ObservableProperty] private int totalSteps;
 
     [ObservableProperty] private double speed = 1.0;
-    [ObservableProperty]
-    private bool isMenuOpen;
+
+    [ObservableProperty] private bool isMenuOpen;
 
     
-    public PlayerViewModel(ISortManagerService sortManager, SortAlgorithm algorithm)
+    public PlayerViewModel(SortManagerService sortManager, SettingsPopupViewModel settingsPopup, SortAlgorithm algorithm)
     {
         _sortManager = sortManager;
         _sortAlgorithm = algorithm;
+        settingsPopupVM = settingsPopup;
+
+        // Subscribe to the event here
+        settingsPopupVM.OnItemsChanged += (sender, items) =>
+        {
+            if (items != null && items.Count > 0)
+            {
+                Cancel();
+                Items = new ObservableCollection<SortItem>(items.Select(v => new SortItem(v)));
+                StartSort(_sortAlgorithm);
+            }
+        };
+
+
         Generate(GenerateType.Random, algorithm);
     }
 
@@ -50,10 +67,11 @@ public partial class PlayerViewModel : ObservableObject
     private void Generate(GenerateType type, SortAlgorithm algorithm)
     {
         Cancel();
-
         Items = _sortManager.GenerateItems(type);
-        StartSort(algorithm); // Default algorithm
+        StartSort(algorithm);
     }
+
+    
 
     [RelayCommand]
     private void StartSort(SortAlgorithm algorithm)
@@ -146,14 +164,18 @@ public partial class PlayerViewModel : ObservableObject
 
     //Settings commands
     [RelayCommand]
+    private void GenerateData(GenerateType generateType)
+    {
+        Generate(generateType, _sortAlgorithm);
+    }
 
 
+    [RelayCommand]
     private void Cancel()
     {
         _cts?.Cancel();
         _cts?.Dispose();
         _cts = null;
-
         _player?.Pause();
         IsPlaying = false;
     }

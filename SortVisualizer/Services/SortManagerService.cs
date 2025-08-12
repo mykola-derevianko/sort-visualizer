@@ -5,23 +5,24 @@ using System.Collections.ObjectModel;
 
 namespace SortVisualizer.Services;
 
-public class SortManagerService : ISortManagerService
+public class SortManagerService
 {
-    private readonly ISortItemGenerator _generator;
+    private readonly SortItemGeneratorService _generator;
     private readonly BubbleSortCommandBuilder _bubbleBuilder = new();
     private readonly QuickSortCommandBuilder _quickBuilder = new();
 
-    public SortManagerService(ISortItemGenerator generator)
+    public SortManagerService(SortItemGeneratorService generator)
     {
         _generator = generator;
     }
 
-    public ObservableCollection<SortItem> GenerateItems(GenerateType type) => type switch
+    public ObservableCollection<SortItem> GenerateItems(GenerateType type, int maxElementValue = 50) => type switch
     {
-        GenerateType.Random => _generator.GenerateRandom(),
-        GenerateType.Reversed => _generator.GenerateReversed(),
-        GenerateType.NearlySorted => _generator.GenerateNearlySorted(),
-        _ => _generator.GenerateRandom(),
+        GenerateType.Random => _generator.GenerateRandom(maxElementValue),
+        GenerateType.Reversed => _generator.GenerateReversed(maxElementValue),
+        GenerateType.NearlySorted => _generator.GenerateNearlySorted(maxElementValue),
+        GenerateType.ManyDuplicates => _generator.GenerateManyDuplicates(maxElementValue),
+        _ => _generator.GenerateRandom(maxElementValue),
     };
 
     public CommandPlayer StartSort(ObservableCollection<SortItem> items, SortAlgorithm algorithm, Action<int>? onStepChanged)

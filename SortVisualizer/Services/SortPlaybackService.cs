@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SortVisualizer.Services;
 
-public class SortPlaybackService : ISortPlaybackService
+public class SortPlaybackService
 {
     private readonly CommandPlayer _player;
     private CancellationTokenSource? _cts;

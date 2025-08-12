@@ -9,13 +9,14 @@ namespace SortVisualizer.Services
     {
         public static void AddCommonServices(this IServiceCollection collection)
         {
-            collection.AddTransient<ISortItemGenerator, SortItemGeneratorService>();
-            collection.AddTransient<ISortManagerService, SortManagerService>();
-
+            collection.AddTransient<SortItemGeneratorService>();
+            collection.AddSingleton<SortManagerService>();
+            collection.AddTransient<SettingsPopupViewModel>();
             // Player factory
             collection.AddTransient<Func<SortAlgorithm, PlayerViewModel>>(provider =>
                 algorithm => new PlayerViewModel(
-                    provider.GetRequiredService<ISortManagerService>(),
+                    provider.GetRequiredService<SortManagerService>(),
+                    provider.GetRequiredService<SettingsPopupViewModel>(),
                     algorithm));
 
             // Visualization factory

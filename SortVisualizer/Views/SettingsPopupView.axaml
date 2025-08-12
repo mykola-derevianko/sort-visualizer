@@ -1,0 +1,102 @@
+<UserControl
+    x:Class="SortVisualizer.Views.SettingsPopupView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:SortVisualizer.Models"
+    xmlns:viewmodels="clr-namespace:SortVisualizer.ViewModels"
+    d:DesignWidth="280"
+    x:DataType="viewmodels:SettingsPopupViewModel"
+    mc:Ignorable="d">
+
+    <Border
+        Width="280"
+        Padding="12"
+        Classes="popup-settings"
+        CornerRadius="6">
+        <StackPanel Spacing="12">
+            <StackPanel>
+                <TextBox
+                    HorizontalAlignment="Stretch"
+                    AcceptsReturn="False"
+                    Classes="settings-input"
+                    Text="{Binding RawInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Watermark="e.g. 5 12 9 3 8" />
+                <TextBox
+                    HorizontalAlignment="Stretch"
+                    AcceptsReturn="False"
+                    Classes="settings-input"
+                    Text="{Binding MaxElementsValue, Mode=TwoWay}"
+                    Watermark="Enter amount of elements" />
+
+            </StackPanel>
+
+            <StackPanel
+                Margin="0,10,0,0"
+                Orientation="Vertical"
+                Spacing="8">
+                <Button
+                    Classes="settings-button"
+                    Command="{Binding GenerateDataCommand}"
+                    CommandParameter="{x:Static models:GenerateType.Random}">
+                    <StackPanel
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="6">
+                        <!--  SVG icon  -->
+                        <Svg Classes="popup-button" Path="/Assets/Icons/dice.svg" />
+
+                        <!--  Button text  -->
+                        <TextBlock VerticalAlignment="Center" Text="Randomize" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    Classes="settings-button"
+                    Command="{Binding GenerateDataCommand}"
+                    CommandParameter="{x:Static models:GenerateType.ManyDuplicates}">
+                    <StackPanel
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="6">
+                        <!--  SVG icon  -->
+                        <Svg Classes="popup-button" Path="/Assets/Icons/duplicates.svg" />
+
+                        <!--  Button text  -->
+                        <TextBlock VerticalAlignment="Center" Text="Many duplicates" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    Classes="settings-button"
+                    Command="{Binding GenerateDataCommand}"
+                    CommandParameter="{x:Static models:GenerateType.Reversed}">
+                    <StackPanel
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="6">
+                        <!--  SVG icon  -->
+                        <Svg Classes="popup-button" Path="/Assets/Icons/reverse.svg" />
+
+                        <!--  Button text  -->
+                        <TextBlock VerticalAlignment="Center" Text="Reversed" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    Classes="settings-button"
+                    Command="{Binding GenerateDataCommand}"
+                    CommandParameter="{x:Static models:GenerateType.NearlySorted}">
+                    <StackPanel
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="6">
+                        <!--  SVG icon  -->
+                        <Svg Classes="popup-button" Path="/Assets/Icons/nearly-sorted.svg" />
+                        <!--  Button text  -->
+                        <TextBlock VerticalAlignment="Center" Text="Nearly Sorted" />
+                    </StackPanel>
+
+                </Button>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</UserControl>

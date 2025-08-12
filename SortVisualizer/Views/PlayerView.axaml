@@ -6,13 +6,13 @@
     xmlns:models="clr-namespace:SortVisualizer.Models"
     xmlns:svg="clr-namespace:Svg.Controls.Skia.Avalonia;assembly=Svg.Controls.Skia.Avalonia"
     xmlns:viewmodels="clr-namespace:SortVisualizer.ViewModels"
+    xmlns:views="clr-namespace:SortVisualizer.Views"
     x:DataType="viewmodels:PlayerViewModel"
     Classes="player">
 
     <UserControl.Resources>
         <converters:ColorStateConverter x:Key="ColorStateConverter" />
         <converters:StepFormatConverter x:Key="StepFormatConverter" />
-        <converters:BoolToTextConverter x:Key="BoolToTextConverter" />
         <converters:PositiveNumberToBoolConverter x:Key="PositiveNumberToBoolConverter" />
     </UserControl.Resources>
 
@@ -22,7 +22,7 @@
         VerticalAlignment="Center"
         Classes="player-container">
         <StackPanel>
-            <Grid DockPanel.Dock="Top">
+            <Grid Height="500" DockPanel.Dock="Top">
                 <ItemsControl ItemsSource="{Binding Items}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -54,22 +54,14 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
 
-                <!--  Popup lives here, so it shows over ItemsControl  -->
                 <Popup
                     Classes="popup-settings"
                     IsOpen="{Binding IsMenuOpen, Mode=TwoWay}"
                     PlacementTarget="{Binding ElementName=MenuButton}">
-                    <Border
-                        Padding="8"
-                        Background=""
-                        CornerRadius="6">
-                        <StackPanel>
-                            <Button>Randomize</Button>
-							<Button>Many Duplicates</Button>
-							<Button>Nearrly Sorted</Button>
-                        </StackPanel>
-                    </Border>
+
+                    <views:SettingsPopupView DataContext="{Binding settingsPopupVM}" />
                 </Popup>
+
             </Grid>
 
             <Border Classes="border-playback-panel">
@@ -109,6 +101,7 @@
                             Stretch="Uniform" />
                     </Button>
 
+
                     <Button Classes="controll-buttons" Command="{Binding StepForwardCommand}">
                         <Svg
                             Width="30"
@@ -116,7 +109,7 @@
                             Path="/Assets/Icons/step-forward.svg" />
                     </Button>
 
-
+                    <!--  Progress Slider  -->
                     <Slider
                         Name="ProgressSlider"
                         Classes="control-slider"
@@ -127,6 +120,7 @@
                         Value="{Binding CurrentStep, Mode=TwoWay}" />
 
                     <TextBlock
+                        Width="100"
                         Margin="5,0,0,0"
                         VerticalAlignment="Center"
                         Text="{Binding CurrentStep, StringFormat='Step: {0}'}" />

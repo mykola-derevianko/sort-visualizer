@@ -4,7 +4,8 @@
     {
         Random,
         Reversed,
-        NearlySorted
+        NearlySorted,
+        ManyDuplicates
     }
 
 }

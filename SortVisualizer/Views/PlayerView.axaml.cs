@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using SortVisualizer.ViewModels;
+using System.Threading.Tasks;
 
 namespace SortVisualizer.Views;
 
@@ -13,10 +14,11 @@ public partial class PlayerView : UserControl
 
 
     }
-    private void ProgressSlider_PointerCaptureLost(object? sender, PointerCaptureLostEventArgs e)
+    private async void ProgressSlider_PointerCaptureLost(object? sender, PointerCaptureLostEventArgs e)
     {
         if (DataContext is PlayerViewModel vm && sender is Slider slider)
         {
+            //Cancel is not working proprly! TODO: make this thing work
             vm.JumpToStepCommand.Execute((int)slider.Value);
         }
     }
