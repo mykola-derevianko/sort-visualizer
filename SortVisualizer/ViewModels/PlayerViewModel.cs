@@ -180,6 +180,13 @@ public partial class PlayerViewModel : ObservableObject
         IsPlaying = false;
     }
 
+    [RelayCommand]
+    private void Restart()
+    {
+        Cancel();
+        JumpToStep(0);
+    }
+
     private async Task PlayFinishAnimationAsync()
     {
         foreach (var item in Items) {

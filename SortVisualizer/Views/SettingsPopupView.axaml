@@ -18,6 +18,7 @@
         <StackPanel Spacing="12">
             <StackPanel>
                 <TextBox
+                    Margin="0,0,0,10"
                     HorizontalAlignment="Stretch"
                     AcceptsReturn="False"
                     Classes="settings-input"
@@ -27,8 +28,9 @@
                     HorizontalAlignment="Stretch"
                     AcceptsReturn="False"
                     Classes="settings-input"
-                    Text="{Binding MaxElementsValue, Mode=TwoWay}"
+                    Text="{Binding MaxElementsValueText, Mode=TwoWay}"
                     Watermark="Enter amount of elements" />
+
 
             </StackPanel>
 

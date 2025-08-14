@@ -64,78 +64,108 @@
 
             </Grid>
 
+            <!--  Bottom playback panel  -->
             <Border Classes="border-playback-panel">
-                <!--  Bottom bar  -->
-                <StackPanel
+                <Grid
+                    VerticalAlignment="Center"
                     Classes="playback-panel"
-                    DockPanel.Dock="Bottom"
-                    Orientation="Horizontal">
+                    ColumnDefinitions="Auto,*,Auto"
+                    ColumnSpacing="40"
+                    DockPanel.Dock="Bottom">
 
-                    <TextBlock
-                        Width="50"
+                    <!--  1️⃣ Speed control  -->
+                    <StackPanel
+                        Grid.Column="0"
                         VerticalAlignment="Center"
-                        Text="{Binding Speed, StringFormat={}{0}x}" />
-                    <Slider
-                        Width="120"
-                        IsSnapToTickEnabled="True"
-                        Maximum="2"
-                        Minimum="0.25"
-                        TickFrequency="0.25"
-                        Value="{Binding Speed, Mode=TwoWay}" />
+                        Orientation="Horizontal"
+                        Spacing="10">
+                        <TextBlock
+                            Width="50"
+                            VerticalAlignment="Center"
+                            Text="{Binding Speed, StringFormat={}{0}x}" />
+                        <Slider
+                            Width="120"
+                            IsSnapToTickEnabled="True"
+                            Maximum="2"
+                            Minimum="0.25"
+                            TickFrequency="0.25"
+                            Value="{Binding Speed, Mode=TwoWay}" />
+                    </StackPanel>
 
-                    <Button
-                        Margin="20,0,0,0"
-                        Classes="controll-buttons"
-                        Command="{Binding StepBackwardCommand}">
-                        <Svg
-                            Width="30"
-                            Height="30"
-                            Path="/Assets/Icons/step-backward.svg" />
-                    </Button>
-
-                    <Button Classes="controll-buttons" Command="{Binding TogglePlayCommand}">
-                        <Svg
-                            Width="30"
-                            Height="30"
-                            Path="/Assets/Icons/play.svg"
-                            Stretch="Uniform" />
-                    </Button>
-
-
-                    <Button Classes="controll-buttons" Command="{Binding StepForwardCommand}">
-                        <Svg
-                            Width="30"
-                            Height="30"
-                            Path="/Assets/Icons/step-forward.svg" />
-                    </Button>
-
-                    <!--  Progress Slider  -->
-                    <Slider
-                        Name="ProgressSlider"
-                        Classes="control-slider"
-                        IsEnabled="{Binding TotalSteps, Converter={StaticResource PositiveNumberToBoolConverter}}"
-                        Maximum="{Binding TotalSteps}"
-                        Minimum="0"
-                        PointerCaptureLost="ProgressSlider_PointerCaptureLost"
-                        Value="{Binding CurrentStep, Mode=TwoWay}" />
-
-                    <TextBlock
-                        Width="100"
-                        Margin="5,0,0,0"
+                    <!--  2️⃣ Playback controls & progress  -->
+                    <StackPanel
+                        Grid.Column="1"
                         VerticalAlignment="Center"
-                        Text="{Binding CurrentStep, StringFormat='Step: {0}'}" />
+                        Orientation="Horizontal"
+                        Spacing="10">
+                        <Button Classes="controll-buttons" Command="{Binding StepBackwardCommand}">
+                            <Svg
+                                Width="30"
+                                Height="30"
+                                Path="/Assets/Icons/step-backward.svg" />
+                        </Button>
 
-                    <Button
-                        x:Name="MenuButton"
-                        Margin="10,0,0,0"
-                        Classes="controll-buttons"
-                        Command="{Binding ToggleMenuCommand}">
-                        <Svg
-                            Width="25"
-                            Height="25"
-                            Path="/Assets/Icons/settings.svg" />
-                    </Button>
-                </StackPanel>
+                        <Button Classes="controll-buttons" Command="{Binding TogglePlayCommand}">
+                            <Svg
+                                Width="30"
+                                Height="30"
+                                Path="/Assets/Icons/play.svg"
+                                Stretch="Uniform" />
+                        </Button>
+
+                        <Button Classes="controll-buttons" Command="{Binding StepForwardCommand}">
+                            <Svg
+                                Width="30"
+                                Height="30"
+                                Path="/Assets/Icons/step-forward.svg" />
+                        </Button>
+
+                        <Slider
+                            Name="ProgressSlider"
+                            Classes="control-slider"
+                            IsEnabled="{Binding TotalSteps, Converter={StaticResource PositiveNumberToBoolConverter}}"
+                            Maximum="{Binding TotalSteps}"
+                            Minimum="0"
+                            PointerCaptureLost="ProgressSlider_PointerCaptureLost"
+                            Value="{Binding CurrentStep, Mode=TwoWay}" />
+
+                        <TextBlock
+                            Width="100"
+                            VerticalAlignment="Center"
+                            Text="{Binding CurrentStep, StringFormat='Step: {0}'}" />
+                    </StackPanel>
+
+                    <!--  3️⃣ Reset & Settings  -->
+                    <StackPanel
+                        Grid.Column="2"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="10">
+                        <Button
+                            x:Name="RestartCommand"
+                            Classes="controll-buttons"
+                            Command="{Binding RestartCommand}"
+                            ToolTip.Tip="Restart playback">
+                            <Svg
+                                Width="25"
+                                Height="25"
+                                Path="/Assets/Icons/reset.svg" />
+                        </Button>
+
+                        <Button
+                            x:Name="MenuButton"
+                            Margin="0,0,10,0"
+                            Classes="controll-buttons"
+                            Command="{Binding ToggleMenuCommand}">
+                            <Svg
+                                Width="25"
+                                Height="25"
+                                Path="/Assets/Icons/settings.svg" />
+                        </Button>
+                    </StackPanel>
+
+                </Grid>
             </Border>
         </StackPanel>
     </Border>

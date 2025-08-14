@@ -24,7 +24,6 @@ public partial class SettingsPopupViewModel : ObservableObject
     public event EventHandler<ObservableCollection<SortItem>>? OnItemsChanged;
 
     private int _maxElementsValue = 50;
-
     public int MaxElementsValue
     {
         get => _maxElementsValue;
@@ -34,6 +33,19 @@ public partial class SettingsPopupViewModel : ObservableObject
             SetProperty(ref _maxElementsValue, newValue);
         }
     }
+
+    public string MaxElementsValueText
+    {
+        get => _maxElementsValue.ToString();
+        set
+        {
+            if (int.TryParse(value, out int num))
+                MaxElementsValue = num;
+            else if (string.IsNullOrWhiteSpace(value))
+                MaxElementsValue = 0;
+        }
+    }
+
 
 
     public SettingsPopupViewModel(SortManagerService sortManager)
@@ -69,7 +81,7 @@ public partial class SettingsPopupViewModel : ObservableObject
     [RelayCommand]
     public void GenerateData(GenerateType generateType)
     {
-        ParsedItems = _sortManager.GenerateItems(generateType, MaxElementsValue);
+        ParsedItems = _sortManager.GenerateItems(generateType, (int)MaxElementsValue!);
         RawInput = ConvertParsedItemsToString(ParsedItems);
         OnItemsChanged?.Invoke(this, ParsedItems);
     }

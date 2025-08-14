@@ -14,7 +14,7 @@ public partial class PlayerView : UserControl
 
 
     }
-    private async void ProgressSlider_PointerCaptureLost(object? sender, PointerCaptureLostEventArgs e)
+    private void ProgressSlider_PointerCaptureLost(object? sender, PointerCaptureLostEventArgs e)
     {
         if (DataContext is PlayerViewModel vm && sender is Slider slider)
         {

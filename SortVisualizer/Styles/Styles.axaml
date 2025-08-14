@@ -2,7 +2,7 @@
 
     <!--  Base slider style  -->
     <Style Selector="Slider.control-slider">
-        <Setter Property="Width" Value="400" />
+        <Setter Property="Width" Value="550" />
         <Setter Property="Height" Value="50" />
         <Setter Property="IsSnapToTickEnabled" Value="True" />
         <Setter Property="TickFrequency" Value="1" />
@@ -83,7 +83,7 @@
         <Setter Property="Background" Value="#252525" />
         <Setter Property="Margin" Value="0,30,0,0" />
         <Setter Property="Padding" Value="15,0,0,0" />
-        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="CornerRadius" Value="15" />
     </Style>
 
     <Style Selector="Border.player-container > StackPanel">
@@ -143,7 +143,7 @@
 
     <!--  Popup  CHANGE!!!  -->
     <Style Selector="Popup.popup-settings">
-        <Setter Property="HorizontalOffset" Value="-20" />
+        <Setter Property="HorizontalOffset" Value="-150" />
         <Setter Property="IsLightDismissEnabled" Value="True" />
         <Setter Property="Placement" Value="Top" />
         <Setter Property="VerticalOffset" Value="-50" />
@@ -160,11 +160,6 @@
         <Setter Property="Background" Value="{DynamicResource SecondaryBackground}" />
     </Style>
 
-    <Style Selector="Svg.popup-button">
-        <Setter Property="Css" Value="path { stroke: #5E5E5E }" />
-        <Setter Property="Width" Value="32" />
-        <Setter Property="Height" Value="32" />
-    </Style>
 
     <!--  Popup buttons  -->
 
@@ -172,6 +167,13 @@
         <Setter Property="Background" Value="{DynamicResource SecondaryBackground}" />
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="FontSize" Value="15" />
+
+        <!--  SVGs  -->
+        <Style Selector="^ > StackPanel > Svg.popup-button">
+            <Setter Property="Css" Value="path { stroke: #5E5E5E }" />
+            <Setter Property="Width" Value="32" />
+            <Setter Property="Height" Value="32" />
+        </Style>
         <Style Selector="^ > StackPanel > TextBlock">
             <Setter Property="Foreground" Value="#5E5E5E" />
 
@@ -179,20 +181,38 @@
         <Style Selector="^:pointerover > StackPanel > TextBlock">
             <Setter Property="Foreground" Value="#fdfdfd" />
         </Style>
-
+        <Style Selector="^:pointerover > StackPanel > Svg.popup-button">
+            <Setter Property="Css" Value="path { stroke: #fdfdfd }" />
+        </Style>
 
     </Style>
-    <Style Selector="Button.settings-button:pointerover > Svg.popup-button">
-        <Setter Property="Css" Value="path { stroke: red }" />
-    </Style>
+
 
     <!--  Popup inputs  -->
 
     <Style Selector="TextBox.settings-input">
+        <Setter Property="MinHeight" Value="40" />
         <Setter Property="Background" Value="#1f1f1f" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="BorderBrush" Value="Transparent" />
-        <Setter Property="Foreground" Value="#4e4e4e" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="Foreground" Value="#fdfdfd" />
+        <Setter Property="CaretBrush" Value="#fdfdfd" />
+
+        <!--  Border around text area  -->
+        <Style Selector="^ /template/ Border#PART_BorderElement">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <!--  The editable text area  -->
+        <Style Selector="^ /template/ ScrollViewer">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <!--  Watermark text  -->
+        <Style Selector="^ /template/ TextBlock#PART_Watermark">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
 
         <Style Selector="^:pointerover">
             <Setter Property="Foreground" Value="#4e4e4e" />
@@ -208,17 +228,18 @@
         </Style>
 
         <Style Selector="^:focus">
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Foreground" Value="#fdfdfd" />
+
             <Style Selector="^ /template/ TextBlock#PART_Watermark">
                 <Setter Property="Foreground" Value="#4e4e4e" />
-
             </Style>
-            <Setter Property="Foreground" Value="#4e4e4e" />
 
             <Style Selector="^ /template/ Border#PART_BorderElement">
                 <Setter Property="Background" Value="#1f1f1f" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="BorderBrush" Value="Transparent" />
             </Style>
+
         </Style>
     </Style>
 
