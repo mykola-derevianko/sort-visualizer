@@ -46,8 +46,6 @@ public partial class SettingsPopupViewModel : ObservableObject
         }
     }
 
-
-
     public SettingsPopupViewModel(SortManagerService sortManager)
     {
         _sortManager = sortManager;

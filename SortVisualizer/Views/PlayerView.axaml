@@ -46,7 +46,8 @@
                                     <MultiBinding Converter="{StaticResource ColorStateConverter}">
                                         <Binding Path="IsSwapping" />
                                         <Binding Path="IsComparing" />
-                                        <Binding Path="IsPivot" />
+										<Binding Path="IsPivot" />
+										<Binding Path="IsSelected" />
                                     </MultiBinding>
                                 </Border.Background>
                             </Border>

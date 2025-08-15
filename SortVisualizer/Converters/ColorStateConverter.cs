@@ -15,6 +15,7 @@ namespace SortVisualizer.Converters
             bool isSwapping = values[0] is true;
             bool isComparing = values[1] is true;
             bool isPivot = values[2] is true;
+            bool isSelected = values[3] is true;
 
             if (isSwapping)
                 return Brushes.Red;
@@ -22,6 +23,8 @@ namespace SortVisualizer.Converters
                 return Brushes.Yellow;
             if (isPivot)
                 return Brushes.Green;
+            if(isSelected)
+                return Brushes.Blue;
 
             return DefaultBrush;
         }

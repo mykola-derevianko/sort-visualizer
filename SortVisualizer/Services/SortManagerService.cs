@@ -10,6 +10,7 @@ public class SortManagerService
     private readonly SortItemGeneratorService _generator;
     private readonly BubbleSortCommandBuilder _bubbleBuilder = new();
     private readonly QuickSortCommandBuilder _quickBuilder = new();
+    private readonly InsertionSortCommandBuilder _insertionBuilder = new();
 
     public SortManagerService(SortItemGeneratorService generator)
     {
@@ -31,6 +32,7 @@ public class SortManagerService
         {
             SortAlgorithm.BubbleSort => _bubbleBuilder.Build(items),
             SortAlgorithm.QuickSort => _quickBuilder.Build(items),
+            SortAlgorithm.InsertionSort => _insertionBuilder.Build(items),
             _ => throw new NotSupportedException("Unsupported algorithm")
         };
 

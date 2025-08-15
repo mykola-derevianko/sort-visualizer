@@ -40,7 +40,6 @@ public partial class PlayerViewModel : ObservableObject
         _sortAlgorithm = algorithm;
         settingsPopupVM = settingsPopup;
 
-        // Subscribe to the event here
         settingsPopupVM.OnItemsChanged += (sender, items) =>
         {
             if (items != null && items.Count > 0)

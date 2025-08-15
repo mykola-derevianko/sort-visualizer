@@ -10,7 +10,6 @@ namespace SortVisualizer.Sorting
 {
     public class CommandPlayer
     {
-        //Callback for step change
         private readonly Action<int>? _onStepChanged;
 
         private readonly IList<ISortCommand> _commands;
@@ -57,6 +56,9 @@ namespace SortVisualizer.Sorting
                         case SwapCommand swap:
                             swap.Highlight(items);
                             break;
+                        case SelectCommand swap:
+                            swap.Highlight(items);
+                            break;
                     }
                 }
                 NotifyStepChanged();
@@ -70,6 +72,7 @@ namespace SortVisualizer.Sorting
             {
                 item.IsComparing = false;
                 item.IsSwapping = false;
+                item.IsSelected = false;
             }
         }
 
