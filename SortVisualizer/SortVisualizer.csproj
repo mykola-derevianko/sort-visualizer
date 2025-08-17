@@ -31,6 +31,11 @@
 	<ItemGroup>
 		<AvaloniaResource Include="Assets\Icons\*.svg" />
 	</ItemGroup>
+	<ItemGroup>
+	  <None Update="Assets\Data\algorithm_info.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
 
 
 </Project>

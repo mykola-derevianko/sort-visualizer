@@ -5,8 +5,119 @@
     xmlns:viewmodels="clr-namespace:SortVisualizer.ViewModels"
     x:DataType="viewmodels:AlgorithmInfoViewModel">
 
-    <StackPanel Margin="20" Background="{DynamicResource PrimaryBackground}">
-        <TextBlock Margin="0,10,0,20" Text="Details about algorithm go here..." />
-        <Button Command="{Binding VisualizeCommand}" Content="Visualize" />
-    </StackPanel>
+    <Grid Background="{DynamicResource PrimaryBackground}">
+
+        <!--  Main content  -->
+        <ScrollViewer>
+            <StackPanel Margin="50,50,100,50" Spacing="10">
+
+                <!--  Algorithm Name  -->
+                <TextBlock
+                    FontSize="40"
+                    FontWeight="Medium"
+                    Text="{Binding Name}" />
+
+                <!--  Description  -->
+                <TextBlock
+                    Margin="0,0,0,10"
+                    FontSize="18"
+                    FontWeight="Regular"
+                    Text="{Binding Description}"
+                    TextWrapping="Wrap" />
+
+                <!--  Pros & Cons  -->
+                <Expander
+                    Margin="0,10,0,0"
+                    Header="Pros &amp; Cons"
+                    IsExpanded="False">
+                    <StackPanel Spacing="15">
+                        <ItemsControl ItemsSource="{Binding Pros}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <WrapPanel Margin="0,0,0,5">
+                                        <Svg
+                                            Width="20"
+                                            Height="20"
+                                            Margin="0,0,10,0"
+                                            Path="/Assets/Icons/plus.svg" />
+                                        <TextBlock Classes="ListItemText" Text="{Binding}" />
+                                    </WrapPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <ItemsControl ItemsSource="{Binding Cons}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <WrapPanel Margin="0,0,0,5">
+                                        <Svg
+                                            Width="20"
+                                            Height="20"
+                                            Margin="0,0,10,0"
+                                            Path="/Assets/Icons/minus.svg" />
+                                        <TextBlock Classes="ListItemText" Text="{Binding}" />
+                                    </WrapPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Expander>
+
+                <!--  Code Example  -->
+                <Expander
+                    Margin="0,10,0,0"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    Header="Code Example"
+                    IsExpanded="False">
+                    <Border
+                        Padding="0"
+                        Background="{DynamicResource SecondaryBackground}"
+                        CornerRadius="20">
+                        <ScrollViewer
+                            Padding="20"
+                            HorizontalScrollBarVisibility="Auto"
+                            VerticalScrollBarVisibility="Auto">
+                            <TextBlock
+                                FontFamily="Consolas"
+                                FontSize="14"
+                                Text="{Binding CodeSnippet}"
+                                TextWrapping="NoWrap" />
+                        </ScrollViewer>
+                    </Border>
+                </Expander>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!--  Visualize Button  -->
+        <Button
+            Width="200"
+            Height="60"
+            Margin="0,0,30,30"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Background="#D2D2D2"
+            Command="{Binding VisualizeCommand}"
+            CornerRadius="30">
+
+            <StackPanel
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Orientation="Horizontal"
+                Spacing="10">
+                <Svg
+                    Width="24"
+                    Height="24"
+                    Css="path { fill: #333333 }"
+                    Path="/Assets/Icons/play.svg" />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontSize="20"
+                    FontWeight="Bold"
+                    Foreground="Black"
+                    Text="Visualize" />
+            </StackPanel>
+        </Button>
+
+    </Grid>
 </UserControl>

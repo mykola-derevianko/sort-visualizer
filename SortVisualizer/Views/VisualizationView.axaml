@@ -6,8 +6,86 @@
     xmlns:views="clr-namespace:SortVisualizer.Views"
     x:DataType="viewmodels:VisualizationViewModel">
 
-    <Grid RowDefinitions="7*,3*">
+    <Grid RowDefinitions="6.5*,3.5*">
         <views:PlayerView Grid.Row="0" DataContext="{Binding Player}" />
-        <Border Grid.Row="1" Padding="10" />
+
+        <Border
+            Grid.Row="1"
+            Margin="70,0,30,35"
+            Padding="10">
+            <Grid ColumnDefinitions="7*,3*">
+                <TextBlock
+                    Grid.Column="0"
+                    Margin="0,0,10,0"
+                    FontSize="20"
+                    Text="{Binding Description}"
+                    TextWrapping="Wrap" />
+
+                <Grid
+                    Grid.Column="1"
+                    Margin="0,0,30,0"
+                    HorizontalAlignment="Right"
+                    ColumnDefinitions="Auto,Auto"
+                    RowDefinitions="Auto,Auto,Auto,Auto">
+
+                    <!--  Best Case  -->
+                    <Border
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Classes="ComplexityCellTitle">
+                        <TextBlock FontWeight="Bold" Text="Best Case:" />
+                    </Border>
+                    <Border
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Classes="ComplexityCellData">
+                        <TextBlock Text="{Binding Complexity.BestCase}" />
+                    </Border>
+
+                    <!--  Average Case  -->
+                    <Border
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Classes="ComplexityCellTitle">
+                        <TextBlock FontWeight="Bold" Text="Average Case:" />
+                    </Border>
+                    <Border
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Classes="ComplexityCellData">
+                        <TextBlock Text="{Binding Complexity.AverageCase}" />
+                    </Border>
+
+                    <!--  Worst Case  -->
+                    <Border
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Classes="ComplexityCellTitle">
+                        <TextBlock FontWeight="Bold" Text="Worst Case:" />
+                    </Border>
+                    <Border
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Classes="ComplexityCellData">
+                        <TextBlock Text="{Binding Complexity.WorstCase}" />
+                    </Border>
+
+                    <!--  Space Complexity  -->
+                    <Border
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Classes="ComplexityCellTitle">
+                        <TextBlock FontWeight="Bold" Text="Space Complexity:" />
+                    </Border>
+                    <Border
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Classes="ComplexityCellData">
+                        <TextBlock Text="{Binding Complexity.SpaceComplexity}" />
+                    </Border>
+                </Grid>
+
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

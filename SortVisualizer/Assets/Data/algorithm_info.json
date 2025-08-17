@@ -1,0 +1,106 @@
+[
+  {
+    "Id": "BubbleSort",
+    "Name": "Bubble Sort",
+    "Description": "Bubble Sort is a fundamental comparison-based sorting algorithm that operates by repeatedly traversing a sequence and comparing adjacent elements, exchanging them whenever they are found to be in the incorrect order. Through successive iterations, larger elements are gradually relocated toward the end of the sequence, while smaller elements progressively move toward the beginning, thereby producing a sorted arrangement. The algorithm derives its name from the manner in which smaller elements appear to 'bubble' upward through the list during the sorting process. Developed in the early years of computer science, it serves primarily as an educational tool due to its conceptual clarity, despite being inefficient for large datasets.",
+    "CodeSnippet": "using System;\n\nclass BubbleSortExample\n{\n    static void BubbleSort(int[] array)\n    {\n        int n = array.Length;\n        bool swapped;\n        for (int i = 0; i < n - 1; i++)\n        {\n            swapped = false;\n            for (int j = 0; j < n - i - 1; j++)\n            {\n                if (array[j] > array[j + 1])\n                {\n                    int temp = array[j];\n                    array[j] = array[j + 1];\n                    array[j + 1] = temp;\n                    swapped = true;\n                }\n            }\n            if (!swapped) break;\n        }\n    }\n\n }",
+    "Pros": [
+      "Conceptually simple and easy to implement",
+      "Stable sorting algorithm",
+      "Operates in-place with constant memory requirements",
+      "Optimizable to detect already sorted arrays and exit early"
+    ],
+    "Cons": [
+      "Highly inefficient for large datasets",
+      "Worst-case and average-case time complexity is O(n^2)",
+      "Performs unnecessary comparisons and swaps compared to more advanced algorithms"
+    ],
+    "AdditionalInfo": {
+      "Description": "Bubble Sort is a fundamental comparison-based sorting algorithm that operates by repeatedly traversing a sequence and comparing adjacent elements, exchanging them whenever they are found to be in the incorrect order. Through successive iterations, larger elements are gradually relocated toward the end of the sequence, while smaller elements progressively move toward the beginning, thereby producing a sorted arrangement. The algorithm derives its name from the manner in which smaller elements appear to 'bubble' upward through the list during the sorting process. Developed in the early years of computer science, it serves primarily as an educational tool due to its conceptual clarity, despite being inefficient for large datasets.",
+      "Complexity": {
+        "BestCase": "O(n)",
+        "AverageCase": "O(n^2)",
+        "WorstCase": "O(n^2)",
+        "SpaceComplexity": "O(1)"
+      }
+    }
+  },
+  {
+    "Id": "QuickSort",
+    "Name": "Quick Sort",
+    "Description": "Quick Sort is an efficient, comparison-based, divide-and-conquer sorting algorithm. It works by selecting a 'pivot' element from the array and partitioning the other elements into two sub-arrays according to whether they are less than or greater than the pivot. The sub-arrays are then recursively sorted. Quick Sort is widely used in practice due to its efficiency on large datasets and its relatively simple implementation.",
+    "CodeSnippet": "using System;\n\nclass QuickSortExample\n{\n    static void QuickSort(int[] array, int low, int high)\n    {\n        if (low < high)\n        {\n            int pi = Partition(array, low, high);\n            QuickSort(array, low, pi - 1);\n            QuickSort(array, pi + 1, high);\n        }\n    }\n\n    static int Partition(int[] array, int low, int high)\n    {\n        int pivot = array[high];\n        int i = low - 1;\n        for (int j = low; j < high; j++)\n        {\n            if (array[j] < pivot)\n            {\n                i++;\n                int temp = array[i];\n                array[i] = array[j];\n                array[j] = temp;\n            }\n        }\n        int swap = array[i + 1];\n        array[i + 1] = array[high];\n        array[high] = swap;\n        return i + 1;\n    }\n}",
+    "Pros": [
+      "Highly efficient for large datasets",
+      "Average-case time complexity is O(n log n)",
+      "In-place sorting (requires only a small stack)",
+      "Widely used and well-understood"
+    ],
+    "Cons": [
+      "Worst-case time complexity is O(n^2) (can be mitigated with random pivot)",
+      "Not stable by default",
+      "Recursive implementation can cause stack overflow for very large datasets"
+    ],
+    "AdditionalInfo": {
+      "Description": "Quick Sort is an efficient, comparison-based, divide-and-conquer sorting algorithm. It works by selecting a 'pivot' element and partitioning other elements relative to it, then recursively sorting the partitions.",
+      "Complexity": {
+        "BestCase": "O(n log n)",
+        "AverageCase": "O(n log n)",
+        "WorstCase": "O(n^2)",
+        "SpaceComplexity": "O(log n)"
+      }
+    }
+  },
+  {
+    "Id": "InsertionSort",
+    "Name": "Insertion Sort",
+    "Description": "Insertion Sort is a simple comparison-based algorithm that builds the final sorted array one element at a time. It works by taking each element from the input and inserting it at the correct position in the already sorted part of the array. While inefficient for large datasets, it is highly effective for small arrays and nearly sorted data.",
+    "CodeSnippet": "using System;\n\nclass InsertionSortExample\n{\n    static void InsertionSort(int[] array)\n    {\n        int n = array.Length;\n        for (int i = 1; i < n; i++)\n        {\n            int key = array[i];\n            int j = i - 1;\n            while (j >= 0 && array[j] > key)\n            {\n                array[j + 1] = array[j];\n                j--;\n            }\n            array[j + 1] = key;\n        }\n    }\n}",
+    "Pros": [
+      "Simple and easy to implement",
+      "Efficient for small or nearly sorted datasets",
+      "Stable sorting algorithm",
+      "In-place sorting with constant memory"
+    ],
+    "Cons": [
+      "Inefficient for large datasets",
+      "Worst-case time complexity is O(n^2)",
+      "Performs many comparisons and shifts for large unsorted data"
+    ],
+    "AdditionalInfo": {
+      "Description": "Insertion Sort incrementally builds a sorted sequence by inserting each new element into its correct position.",
+      "Complexity": {
+        "BestCase": "O(n)",
+        "AverageCase": "O(n^2)",
+        "WorstCase": "O(n^2)",
+        "SpaceComplexity": "O(1)"
+      }
+    }
+  },
+  {
+    "Id": "SelectionSort",
+    "Name": "Selection Sort",
+    "Description": "Selection Sort is a comparison-based algorithm that repeatedly selects the smallest (or largest) element from the unsorted portion of the array and moves it to the sorted portion. It is conceptually simple and requires minimal memory, but its inefficiency on large datasets makes it primarily an educational tool.",
+    "CodeSnippet": "using System;\n\nclass SelectionSortExample\n{\n    static void SelectionSort(int[] array)\n    {\n        int n = array.Length;\n        for (int i = 0; i < n - 1; i++)\n        {\n            int minIndex = i;\n            for (int j = i + 1; j < n; j++)\n            {\n                if (array[j] < array[minIndex])\n                    minIndex = j;\n            }\n            int temp = array[minIndex];\n            array[minIndex] = array[i];\n            array[i] = temp;\n        }\n    }\n}",
+    "Pros": [
+      "Simple to understand and implement",
+      "In-place sorting with constant memory",
+      "Performs a predictable number of swaps",
+      "No additional memory required"
+    ],
+    "Cons": [
+      "Inefficient for large datasets",
+      "Time complexity is always O(n^2)",
+      "Not stable unless modified"
+    ],
+    "AdditionalInfo": {
+      "Description": "Selection Sort repeatedly finds the minimum element from the unsorted portion and moves it to the sorted portion.",
+      "Complexity": {
+        "BestCase": "O(n^2)",
+        "AverageCase": "O(n^2)",
+        "WorstCase": "O(n^2)",
+        "SpaceComplexity": "O(1)"
+      }
+    }
+  }
+]
