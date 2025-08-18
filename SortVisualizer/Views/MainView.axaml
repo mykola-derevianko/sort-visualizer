@@ -12,31 +12,19 @@
     <Grid Background="{DynamicResource PrimaryBackground}" ColumnDefinitions="2*,8*">
         <!--  Sidebar  -->
         <Border Grid.Column="0" Classes="sidebar">
-            <StackPanel>
-                <Button
-                    Classes="sidebar-button"
-                    Command="{Binding ShowSortInfoCommand}"
-                    CommandParameter="{x:Static models:SortAlgorithm.BubbleSort}"
-                    Content="Bubble Sort" />
+            <ListBox
+                Background="Transparent"
+                BorderThickness="0"
+                Classes="sidebar-listbox"
+                ItemsSource="{Binding SortAlgorithms}"
+                SelectedItem="{Binding SelectedAlgorithm, Mode=TwoWay}">
 
-                <Button
-                    Classes="sidebar-button"
-                    Command="{Binding ShowSortInfoCommand}"
-                    CommandParameter="{x:Static models:SortAlgorithm.QuickSort}"
-                    Content="Quick Sort" />
-
-                <Button
-                    Classes="sidebar-button"
-                    Command="{Binding ShowSortInfoCommand}"
-                    CommandParameter="{x:Static models:SortAlgorithm.InsertionSort}"
-                    Content="Insertion Sort" />
-
-                <Button
-                    Classes="sidebar-button"
-                    Command="{Binding ShowSortInfoCommand}"
-                    CommandParameter="{x:Static models:SortAlgorithm.SelectionSort}"
-                    Content="Selection Sort" />
-            </StackPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Border>
 
         <!--  Dynamic main content  -->

@@ -18,6 +18,7 @@
                     Grid.Column="0"
                     Margin="0,0,10,0"
                     FontSize="20"
+                    LineHeight="35"
                     Text="{Binding Description}"
                     TextWrapping="Wrap" />
 
@@ -33,7 +34,8 @@
                         Grid.Row="0"
                         Grid.Column="0"
                         Classes="ComplexityCellTitle">
-                        <TextBlock FontWeight="Bold" Text="Best Case:" />
+                        <TextBlock
+                            Text="Best Case" />
                     </Border>
                     <Border
                         Grid.Row="0"
@@ -47,7 +49,8 @@
                         Grid.Row="1"
                         Grid.Column="0"
                         Classes="ComplexityCellTitle">
-                        <TextBlock FontWeight="Bold" Text="Average Case:" />
+                        <TextBlock
+                            Text="Average Case" />
                     </Border>
                     <Border
                         Grid.Row="1"
@@ -61,7 +64,8 @@
                         Grid.Row="2"
                         Grid.Column="0"
                         Classes="ComplexityCellTitle">
-                        <TextBlock FontWeight="Bold" Text="Worst Case:" />
+                        <TextBlock
+                            Text="Worst Case" />
                     </Border>
                     <Border
                         Grid.Row="2"
@@ -75,7 +79,8 @@
                         Grid.Row="3"
                         Grid.Column="0"
                         Classes="ComplexityCellTitle">
-                        <TextBlock FontWeight="Bold" Text="Space Complexity:" />
+                        <TextBlock
+                            Text="Space Complexity" />
                     </Border>
                     <Border
                         Grid.Row="3"

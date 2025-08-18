@@ -2,7 +2,7 @@
 
     <!--  Base slider style  -->
     <Style Selector="Slider.control-slider">
-        <Setter Property="Width" Value="550" />
+        <Setter Property="Width" Value="700" />
         <Setter Property="Height" Value="50" />
         <Setter Property="IsSnapToTickEnabled" Value="True" />
         <Setter Property="TickFrequency" Value="1" />
@@ -105,7 +105,7 @@
         <Setter Property="VerticalAlignment" Value="Stretch" />
         <Setter Property="Background" Value="{DynamicResource SecondaryBackground}" />
     </Style>
-    <Style Selector="Border.sidebar > StackPanel">
+    <Style Selector="Border.sidebar > ListBox">
 
         <Setter Property="HorizontalAlignment" Value="Center" />
 
@@ -113,16 +113,15 @@
 
 
 
-    <!--  Sidebar Buttons  -->
-    <Style Selector="Button.sidebar-button">
-
+    <!--  Sidebar ListBox Items  -->
+    <Style Selector="ListBox.sidebar-listbox > ListBoxItem">
         <Setter Property="FontSize" Value="36" />
-        <Setter Property="Foreground" Value="#b5b5b5" />
 
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Margin" Value="5" />
         <Setter Property="Padding" Value="30,0,0,0" />
+
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderBrush" Value="Transparent" />
 
@@ -130,13 +129,31 @@
         <Setter Property="Width" Value="355" />
         <Setter Property="CornerRadius" Value="42" />
 
+
+        <Style Selector="^ > TextBlock">
+            <Setter Property="Foreground" Value="#b5b5b5" />
+        </Style>
+        <Style Selector="^:pointerover > TextBlock">
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+        <Style Selector="^:selected > TextBlock">
+            <Setter Property="Foreground" Value="White" />
+
+        </Style>
+
+        <!--  Hover  -->
+        <Style Selector="^:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#454545" />
+
+        </Style>
+
+        <!--  Selected (persistent after click)  -->
+        <Style Selector="^:selected /template/ ContentPresenter">
+            <Setter Property="Background" Value="#454545" />
+
+        </Style>
     </Style>
 
-    <Style Selector="Button.sidebar-button:pointerover /template/ ContentPresenter">
-        <Setter Property="Background" Value="#454545" />
-        <Setter Property="Foreground" Value="#ffffff" />
-
-    </Style>
 
     <Style Selector="Button.controll-buttons">
         <Setter Property="Background" Value="Transparent" />
@@ -333,12 +350,20 @@
         <Setter Property="BorderThickness" Value="0,1,1,0" />
         <Setter Property="BorderBrush" Value="White" />
         <Setter Property="Padding" Value="4" />
-
+        <Style Selector="^ > TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="FontWeight" Value="Regular" />
+            <Setter Property="FontSize" Value="20" />
+        </Style>
     </Style>
     <Style Selector="Border.ComplexityCellData">
         <Setter Property="BorderThickness" Value="0,1,0,0" />
         <Setter Property="BorderBrush" Value="White" />
         <Setter Property="Padding" Value="4" />
-
+        <Style Selector="^ > TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="FontWeight" Value="Regular" />
+            <Setter Property="FontSize" Value="20" />
+        </Style>
     </Style>
 </Styles>
