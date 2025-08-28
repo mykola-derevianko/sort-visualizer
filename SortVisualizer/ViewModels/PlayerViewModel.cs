@@ -92,8 +92,11 @@ public partial class PlayerViewModel : ObservableObject
     [RelayCommand]
     private async Task StepForward()
     {
-        if (_player == null)
-            return;
+        if (_player == null) return;
+        if (IsPlaying)
+        {
+            Cancel();
+        }
 
         _player.StepForward(Items);
         CurrentStep = _player.CurrentStep;
@@ -108,8 +111,15 @@ public partial class PlayerViewModel : ObservableObject
     [RelayCommand]
     private void StepBackward()
     {
-        _player?.StepBackward(Items);
-        CurrentStep = _player?.CurrentStep ?? CurrentStep;
+        if (_player == null) return;
+
+        if (IsPlaying)
+        {
+            Cancel();
+        }
+
+        _player.StepBackward(Items);
+        CurrentStep = _player.CurrentStep;
     }
 
     [RelayCommand]

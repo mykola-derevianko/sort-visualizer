@@ -78,6 +78,7 @@
                             HorizontalScrollBarVisibility="Auto"
                             VerticalScrollBarVisibility="Auto">
                             <TextBlock
+                                xml:space="preserve"
                                 FontFamily="Consolas"
                                 FontSize="14"
                                 Text="{Binding CodeSnippet}"
