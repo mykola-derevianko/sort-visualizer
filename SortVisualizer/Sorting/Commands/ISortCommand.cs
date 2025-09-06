@@ -7,6 +7,10 @@ namespace SortVisualizer.Sorting.Commands
     {
         void Execute(IList<SortItem> items);
         void Undo(IList<SortItem> items);
+        
+        /// <summary>
+        /// The line number in the pseudo code that corresponds to this command
+        /// </summary>
+        int PseudoCodeLineNumber { get; }
     }
-
 }

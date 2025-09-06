@@ -17,20 +17,17 @@ namespace SortVisualizer.Sorting
                 int key = simulatedValues[i];
                 int j = i - 1;
 
-                // Highlight picked element
                 commands.Add(new SelectCommand(i));
 
-                // Shift comparison until correct position
                 while (j >= 0 && simulatedValues[j] > key)
                 {
                     commands.Add(new CompareCommand(j, i));
                     j--;
                 }
 
-                // Insert into correct position (only if moved)
                 if (j + 1 != i)
                 {
-                    commands.Add(new MoveCommand(i, j + 1));
+                    commands.Add(new MoveCommand(i, j + 1, 6));
                     simulatedValues.RemoveAt(i);
                     simulatedValues.Insert(j + 1, key);
                 }

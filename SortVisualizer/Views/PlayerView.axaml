@@ -14,168 +14,204 @@
         <converters:ColorStateConverter x:Key="ColorStateConverter" />
         <converters:PositiveNumberToBoolConverter x:Key="PositiveNumberToBoolConverter" />
         <converters:PlayPauseIconConverter x:Key="PlayPauseIconConverter" />
+        <converters:IndentationConverter x:Key="IndentationConverter" />
     </UserControl.Resources>
 
+    <Grid>
+        <!--  Main Visualization Area  -->
+        <Border
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Classes="player-container">
+            <StackPanel>
+                <Grid Height="500" DockPanel.Dock="Top">
+                    <ItemsControl ItemsSource="{Binding Items}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Bottom"
+                                    Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
 
-    <Border
-        HorizontalAlignment="Center"
-        VerticalAlignment="Center"
-        Classes="player-container">
-        <StackPanel>
-            <Grid Height="500" DockPanel.Dock="Top">
-                <ItemsControl ItemsSource="{Binding Items}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Bottom"
-                                Orientation="Horizontal" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="models:SortItem">
+                                <Border
+                                    Width="22"
+                                    Height="{Binding Value}"
+                                    Margin="1"
+                                    VerticalAlignment="Bottom"
+                                    Classes="sort-item"
+                                    CornerRadius="5">
+                                    <Border.Background>
+                                        <MultiBinding Converter="{StaticResource ColorStateConverter}">
+                                            <Binding Path="IsSwapping" />
+                                            <Binding Path="IsComparing" />
+                                            <Binding Path="IsPivot" />
+                                            <Binding Path="IsSelected" />
+                                        </MultiBinding>
+                                    </Border.Background>
 
+                                    <!--  Add Tooltip  -->
+                                    <ToolTip.Tip>
+                                        <TextBlock
+                                            FontSize="12"
+                                            Foreground="Black"
+                                            Text="{Binding Value}" />
+                                    </ToolTip.Tip>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <Popup
+                        Classes="popup-settings"
+                        IsOpen="{Binding IsMenuOpen, Mode=TwoWay}"
+                        PlacementTarget="{Binding ElementName=MenuButton}">
+
+                        <views:SettingsPopupView DataContext="{Binding settingsPopupVM}" />
+                    </Popup>
+
+                </Grid>
+
+                <!--  Bottom playback panel  -->
+                <Border Classes="border-playback-panel">
+                    <Grid
+                        VerticalAlignment="Center"
+                        Classes="playback-panel"
+                        ColumnDefinitions="Auto,*,Auto"
+                        ColumnSpacing="40"
+                        DockPanel.Dock="Bottom">
+
+                        <!--  1️⃣ Speed control  -->
+                        <StackPanel
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal"
+                            Spacing="10">
+                            <TextBlock
+                                Width="50"
+                                VerticalAlignment="Center"
+                                Text="{Binding Speed, StringFormat={}{0}x}" />
+                            <Slider
+                                Width="120"
+                                IsSnapToTickEnabled="True"
+                                Maximum="2"
+                                Minimum="0.25"
+                                TickFrequency="0.25"
+                                Value="{Binding Speed, Mode=TwoWay}" />
+                        </StackPanel>
+
+                        <!--  2️⃣ Playback controls & progress  -->
+                        <StackPanel
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal"
+                            Spacing="10">
+                            <Button Classes="controll-buttons" Command="{Binding StepBackwardCommand}">
+                                <Svg
+                                    Width="30"
+                                    Height="30"
+                                    Path="/Assets/Icons/step-backward.svg" />
+                            </Button>
+
+                            <Button Classes="controll-buttons" Command="{Binding TogglePlayCommand}">
+                                <Svg
+                                    Width="30"
+                                    Height="30"
+                                    Path="{Binding IsPlaying, Converter={StaticResource PlayPauseIconConverter}}"
+                                    Stretch="Uniform" />
+                            </Button>
+
+                            <Button Classes="controll-buttons" Command="{Binding StepForwardCommand}">
+                                <Svg
+                                    Width="30"
+                                    Height="30"
+                                    Path="/Assets/Icons/step-forward.svg" />
+                            </Button>
+
+                            <Slider
+                                Name="ProgressSlider"
+                                Classes="control-slider"
+                                IsEnabled="{Binding TotalSteps, Converter={StaticResource PositiveNumberToBoolConverter}}"
+                                Maximum="{Binding TotalSteps}"
+                                Minimum="0"
+                                PointerCaptureLost="ProgressSlider_PointerCaptureLost"
+                                Value="{Binding CurrentStep, Mode=TwoWay}" />
+
+                            <TextBlock
+                                Width="100"
+                                VerticalAlignment="Center"
+                                Text="{Binding CurrentStep, StringFormat='Step: {0}'}" />
+                        </StackPanel>
+
+                        <!--  3️⃣ Reset & Settings  -->
+                        <StackPanel
+                            Grid.Column="2"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal"
+                            Spacing="10">
+                            <Button
+                                x:Name="RestartCommand"
+                                Classes="controll-buttons"
+                                Command="{Binding RestartCommand}"
+                                ToolTip.Tip="Restart playback">
+                                <Svg
+                                    Width="25"
+                                    Height="25"
+                                    Path="/Assets/Icons/reset.svg" />
+                            </Button>
+
+                            <Button
+                                x:Name="MenuButton"
+                                Margin="0,0,10,0"
+                                Classes="controll-buttons"
+                                Command="{Binding ToggleMenuCommand}">
+                                <Svg
+                                    Width="25"
+                                    Height="25"
+                                    Path="/Assets/Icons/settings.svg" />
+                            </Button>
+                        </StackPanel>
+
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </Border>
+
+        <!--  Pseudo Code Expander (Positioned on the left side)  -->
+        <Expander
+            Width="350"
+            MaxHeight="400"
+            Margin="20"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Background="{DynamicResource SecondaryBackground}"
+            CornerRadius="10"
+            Header="Pseudo Code"
+            IsExpanded="{Binding IsPseudoCodeExpanded, Mode=TwoWay}">
+
+            <ScrollViewer MaxHeight="300" VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding PseudoCodeLines}">
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate x:DataType="models:SortItem">
+                        <DataTemplate x:DataType="models:PseudoCodeLine">
                             <Border
-                                Width="22"
-                                Height="{Binding Value}"
-                                Margin="1"
-                                VerticalAlignment="Bottom"
-                                Classes="sort-item"
-                                CornerRadius="5">
-                                <Border.Background>
-                                    <MultiBinding Converter="{StaticResource ColorStateConverter}">
-                                        <Binding Path="IsSwapping" />
-                                        <Binding Path="IsComparing" />
-                                        <Binding Path="IsPivot" />
-                                        <Binding Path="IsSelected" />
-                                    </MultiBinding>
-                                </Border.Background>
-
-                                <!--  Add Tooltip  -->
-                                <ToolTip.Tip>
-                                    <TextBlock
-                                        FontSize="12"
-                                        Foreground="Black"
-                                        Text="{Binding Value}" />
-                                </ToolTip.Tip>
+                                Margin="2"
+                                Padding="8,4"
+                                Background="{Binding IsHighlighted, Converter={x:Static converters:BoolToColorConverter.Instance}}"
+                                CornerRadius="4">
+                                <TextBlock
+                                    Margin="{Binding IndentLevel, Converter={StaticResource IndentationConverter}}"
+                                    FontFamily="Consolas"
+                                    FontSize="12"
+                                    Text="{Binding Text}" />
                             </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-
-                <Popup
-                    Classes="popup-settings"
-                    IsOpen="{Binding IsMenuOpen, Mode=TwoWay}"
-                    PlacementTarget="{Binding ElementName=MenuButton}">
-
-                    <views:SettingsPopupView DataContext="{Binding settingsPopupVM}" />
-                </Popup>
-
-            </Grid>
-
-            <!--  Bottom playback panel  -->
-            <Border Classes="border-playback-panel">
-                <Grid
-                    VerticalAlignment="Center"
-                    Classes="playback-panel"
-                    ColumnDefinitions="Auto,*,Auto"
-                    ColumnSpacing="40"
-                    DockPanel.Dock="Bottom">
-
-                    <!--  1️⃣ Speed control  -->
-                    <StackPanel
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Orientation="Horizontal"
-                        Spacing="10">
-                        <TextBlock
-                            Width="50"
-                            VerticalAlignment="Center"
-                            Text="{Binding Speed, StringFormat={}{0}x}" />
-                        <Slider
-                            Width="120"
-                            IsSnapToTickEnabled="True"
-                            Maximum="2"
-                            Minimum="0.25"
-                            TickFrequency="0.25"
-                            Value="{Binding Speed, Mode=TwoWay}" />
-                    </StackPanel>
-
-                    <!--  2️⃣ Playback controls & progress  -->
-                    <StackPanel
-                        Grid.Column="1"
-                        VerticalAlignment="Center"
-                        Orientation="Horizontal"
-                        Spacing="10">
-                        <Button Classes="controll-buttons" Command="{Binding StepBackwardCommand}">
-                            <Svg
-                                Width="30"
-                                Height="30"
-                                Path="/Assets/Icons/step-backward.svg" />
-                        </Button>
-
-                        <Button Classes="controll-buttons" Command="{Binding TogglePlayCommand}">
-                            <Svg
-                                Width="30"
-                                Height="30"
-                                Path="{Binding IsPlaying, Converter={StaticResource PlayPauseIconConverter}}"
-                                Stretch="Uniform" />
-                        </Button>
-
-                        <Button Classes="controll-buttons" Command="{Binding StepForwardCommand}">
-                            <Svg
-                                Width="30"
-                                Height="30"
-                                Path="/Assets/Icons/step-forward.svg" />
-                        </Button>
-
-                        <Slider
-                            Name="ProgressSlider"
-                            Classes="control-slider"
-                            IsEnabled="{Binding TotalSteps, Converter={StaticResource PositiveNumberToBoolConverter}}"
-                            Maximum="{Binding TotalSteps}"
-                            Minimum="0"
-                            PointerCaptureLost="ProgressSlider_PointerCaptureLost"
-                            Value="{Binding CurrentStep, Mode=TwoWay}" />
-
-                        <TextBlock
-                            Width="100"
-                            VerticalAlignment="Center"
-                            Text="{Binding CurrentStep, StringFormat='Step: {0}'}" />
-                    </StackPanel>
-
-                    <!--  3️⃣ Reset & Settings  -->
-                    <StackPanel
-                        Grid.Column="2"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Center"
-                        Orientation="Horizontal"
-                        Spacing="10">
-                        <Button
-                            x:Name="RestartCommand"
-                            Classes="controll-buttons"
-                            Command="{Binding RestartCommand}"
-                            ToolTip.Tip="Restart playback">
-                            <Svg
-                                Width="25"
-                                Height="25"
-                                Path="/Assets/Icons/reset.svg" />
-                        </Button>
-
-                        <Button
-                            x:Name="MenuButton"
-                            Margin="0,0,10,0"
-                            Classes="controll-buttons"
-                            Command="{Binding ToggleMenuCommand}">
-                            <Svg
-                                Width="25"
-                                Height="25"
-                                Path="/Assets/Icons/settings.svg" />
-                        </Button>
-                    </StackPanel>
-
-                </Grid>
-            </Border>
-        </StackPanel>
-    </Border>
+            </ScrollViewer>
+        </Expander>
+    </Grid>
 </UserControl>

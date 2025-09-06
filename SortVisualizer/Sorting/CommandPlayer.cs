@@ -11,7 +11,6 @@ namespace SortVisualizer.Sorting
     public class CommandPlayer
     {
         private readonly Action<int>? _onStepChanged;
-
         private readonly IList<ISortCommand> _commands;
         private int _currentIndex = -1;
         private bool _isPlaying = false;
@@ -23,7 +22,15 @@ namespace SortVisualizer.Sorting
         {
             _commands = commands.ToList();
             _onStepChanged = onStepChanged;
+        }
 
+        public ISortCommand? GetCommandAtStep(int stepIndex)
+        {
+            if (stepIndex >= 0 && stepIndex < _commands.Count)
+            {
+                return _commands[stepIndex];
+            }
+            return null;
         }
 
         public void StepForward(IList<SortItem> items)
@@ -65,7 +72,6 @@ namespace SortVisualizer.Sorting
             }
         }
 
-
         private void ClearAllHighlights(IList<SortItem> items)
         {
             foreach (var item in items)
@@ -75,8 +81,6 @@ namespace SortVisualizer.Sorting
                 item.IsSelected = false;
             }
         }
-
-
 
         public async Task PlayAsync(IList<SortItem> items, CancellationToken token, double speedMultiplier)
         {
@@ -101,18 +105,26 @@ namespace SortVisualizer.Sorting
             }
         }
 
-
         public void Pause() => _isPlaying = false;
 
         public void JumpToStep(int stepIndex, IList<SortItem> items)
         {
+            // Immediately stop playback to prevent conflicts
+            _isPlaying = false;
+            
+            // Ensure stepIndex is within bounds
+            stepIndex = Math.Max(0, Math.Min(stepIndex, _commands.Count));
+            
+            // Jump to the target step
             while (_currentIndex < stepIndex - 1)
                 StepForward(items);
             while (_currentIndex >= stepIndex)
                 StepBackward(items);
+                
+            // Ensure proper notification
+            NotifyStepChanged();
         }
 
         private void NotifyStepChanged() => _onStepChanged?.Invoke(CurrentStep);
     }
-
 }

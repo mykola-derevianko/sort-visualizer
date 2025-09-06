@@ -33,12 +33,20 @@ public partial class PlayerViewModel : ObservableObject
 
     [ObservableProperty] private bool isMenuOpen;
 
-    
+    [ObservableProperty] private bool isPseudoCodeExpanded = false;
+
+    [ObservableProperty] 
+    private ObservableCollection<PseudoCodeLine> pseudoCodeLines = new();
+
     public PlayerViewModel(SortManagerService sortManager, SettingsPopupViewModel settingsPopup, SortAlgorithm algorithm)
     {
         _sortManager = sortManager;
         _sortAlgorithm = algorithm;
         settingsPopupVM = settingsPopup;
+
+        // Initialize pseudo code
+        var pseudoCode = PseudoCodeProvider.GetPseudoCode(algorithm);
+        PseudoCodeLines = new ObservableCollection<PseudoCodeLine>(pseudoCode);
 
         settingsPopupVM.OnItemsChanged += (sender, items) =>
         {
@@ -50,8 +58,32 @@ public partial class PlayerViewModel : ObservableObject
             }
         };
 
-
         Generate(GenerateType.Random, algorithm);
+    }
+
+    partial void OnCurrentStepChanged(int value)
+    {
+        UpdatePseudoCodeHighlighting();
+    }
+
+    private void UpdatePseudoCodeHighlighting()
+    {
+        // Clear all highlights
+        foreach (var line in PseudoCodeLines)
+        {
+            line.IsHighlighted = false;
+        }
+
+        // Highlight current line if available
+        if (_player != null && CurrentStep > 0 && CurrentStep <= _player.TotalSteps)
+        {
+            var currentCommand = _player.GetCommandAtStep(CurrentStep - 1);
+            if (currentCommand != null && currentCommand.PseudoCodeLineNumber >= 0 && 
+                currentCommand.PseudoCodeLineNumber < PseudoCodeLines.Count)
+            {
+                PseudoCodeLines[currentCommand.PseudoCodeLineNumber].IsHighlighted = true;
+            }
+        }
     }
 
     partial void OnSpeedChanged(double value)
@@ -69,8 +101,6 @@ public partial class PlayerViewModel : ObservableObject
         Items = _sortManager.GenerateItems(type);
         StartSort(algorithm);
     }
-
-    
 
     [RelayCommand]
     private void StartSort(SortAlgorithm algorithm)
@@ -106,7 +136,6 @@ public partial class PlayerViewModel : ObservableObject
             await PlayFinishAnimationAsync();
         }
     }
-
 
     [RelayCommand]
     private void StepBackward()
@@ -177,7 +206,6 @@ public partial class PlayerViewModel : ObservableObject
         Generate(generateType, _sortAlgorithm);
     }
 
-
     [RelayCommand]
     private void Cancel()
     {
@@ -214,6 +242,4 @@ public partial class PlayerViewModel : ObservableObject
         foreach (var item in Items)
             item.IsPivot = false;
     }
-
-
 }

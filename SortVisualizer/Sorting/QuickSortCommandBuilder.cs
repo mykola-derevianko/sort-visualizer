@@ -34,7 +34,7 @@ namespace SortVisualizer.Sorting
             int pivot = arr[high];
             int i = low - 1;
 
-            _commands.Add(new SetPivotCommand(high));
+            _commands.Add(new SetPivotCommand(high, 5));
 
             for (int j = low; j < high; j++)
             {

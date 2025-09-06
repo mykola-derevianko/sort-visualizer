@@ -16,24 +16,22 @@ namespace SortVisualizer.Sorting
             {
                 int minIndex = i;
                 
-                // Select the current position
-                commands.Add(new SelectCommand(i));
+                commands.Add(new SelectCommand(i, 1));
 
-                // Find the minimum element in the remaining unsorted array
                 for (int j = i + 1; j < simulatedValues.Count; j++)
                 {
-                    commands.Add(new CompareCommand(j, minIndex));
+                    commands.Add(new CompareCommand(j, minIndex, 3));
                     
                     if (simulatedValues[j] < simulatedValues[minIndex])
                     {
                         minIndex = j;
+                        commands.Add(new SelectCommand(j, 4));
                     }
                 }
 
-                // Swap the found minimum element with the first element
                 if (minIndex != i)
                 {
-                    commands.Add(new SwapCommand(i, minIndex));
+                    commands.Add(new SwapCommand(i, minIndex, 6));
                     (simulatedValues[i], simulatedValues[minIndex]) = (simulatedValues[minIndex], simulatedValues[i]);
                 }
             }

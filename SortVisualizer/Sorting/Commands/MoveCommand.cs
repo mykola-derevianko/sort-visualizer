@@ -7,11 +7,14 @@ namespace SortVisualizer.Sorting.Commands
     {
         private readonly int _fromIndex;
         private readonly int _toIndex;
+        
+        public int PseudoCodeLineNumber { get; }
 
-        public MoveCommand(int fromIndex, int toIndex)
+        public MoveCommand(int fromIndex, int toIndex, int pseudoCodeLineNumber = -1)
         {
             _fromIndex = fromIndex;
             _toIndex = toIndex;
+            PseudoCodeLineNumber = pseudoCodeLineNumber;
         }
 
         public void Execute(IList<SortItem> items)

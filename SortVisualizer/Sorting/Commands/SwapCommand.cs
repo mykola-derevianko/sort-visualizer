@@ -7,19 +7,26 @@ namespace SortVisualizer.Sorting.Commands
     {
         private readonly int _indexA;
         private readonly int _indexB;
+        
+        public int PseudoCodeLineNumber { get; }
 
-        public SwapCommand(int indexA, int indexB)
+        public SwapCommand(int indexA, int indexB, int pseudoCodeLineNumber = -1)
         {
             _indexA = indexA;
             _indexB = indexB;
+            PseudoCodeLineNumber = pseudoCodeLineNumber;
         }
 
         public void Execute(IList<SortItem> items)
         {
             items[_indexA].IsSwapping = true;
             items[_indexB].IsSwapping = true;
-            (items[_indexA], items[_indexB]) = (items[_indexB], items[_indexA]);
+
+            var temp = items[_indexA].Value;
+            items[_indexA].Value = items[_indexB].Value;
+            items[_indexB].Value = temp;
         }
+
         public void Highlight(IList<SortItem> items)
         {
             items[_indexA].IsSwapping = true;
@@ -28,8 +35,12 @@ namespace SortVisualizer.Sorting.Commands
 
         public void Undo(IList<SortItem> items)
         {
-            Execute(items);
+            var temp = items[_indexA].Value;
+            items[_indexA].Value = items[_indexB].Value;
+            items[_indexB].Value = temp;
+
+            items[_indexA].IsSwapping = false;
+            items[_indexB].IsSwapping = false;
         }
     }
-
 }
