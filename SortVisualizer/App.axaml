@@ -26,10 +26,7 @@
         <SolidColorBrush x:Key="SecondaryBackground">#272727</SolidColorBrush>
         <SolidColorBrush x:Key="ExpanderChevronForeground" Color="White" />
         <SolidColorBrush x:Key="ExpanderChevronForegroundPointerOver" Color="White" />
-        <SolidColorBrush x:Key="ExpanderChevronForegroundPressed" Color="White" />
-
-
-        <local:SliderValueToWidthConverter x:Key="SliderValueToWidthConverter" />
+        <SolidColorBrush x:Key="ExpanderChevronForegroundPressed" Color="White" />  
     </Application.Resources>
 
 </Application>

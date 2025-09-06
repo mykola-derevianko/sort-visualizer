@@ -171,7 +171,6 @@ public partial class PlayerViewModel : ObservableObject
         CurrentStep = _player?.CurrentStep ?? CurrentStep;
     }
 
-    //Settings commands
     [RelayCommand]
     private void GenerateData(GenerateType generateType)
     {

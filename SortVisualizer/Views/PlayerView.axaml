@@ -12,8 +12,8 @@
 
     <UserControl.Resources>
         <converters:ColorStateConverter x:Key="ColorStateConverter" />
-        <converters:StepFormatConverter x:Key="StepFormatConverter" />
         <converters:PositiveNumberToBoolConverter x:Key="PositiveNumberToBoolConverter" />
+        <converters:PlayPauseIconConverter x:Key="PlayPauseIconConverter" />
     </UserControl.Resources>
 
 
@@ -46,10 +46,18 @@
                                     <MultiBinding Converter="{StaticResource ColorStateConverter}">
                                         <Binding Path="IsSwapping" />
                                         <Binding Path="IsComparing" />
-										<Binding Path="IsPivot" />
-										<Binding Path="IsSelected" />
+                                        <Binding Path="IsPivot" />
+                                        <Binding Path="IsSelected" />
                                     </MultiBinding>
                                 </Border.Background>
+
+                                <!--  Add Tooltip  -->
+                                <ToolTip.Tip>
+                                    <TextBlock
+                                        FontSize="12"
+                                        Foreground="Black"
+                                        Text="{Binding Value}" />
+                                </ToolTip.Tip>
                             </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -110,7 +118,7 @@
                             <Svg
                                 Width="30"
                                 Height="30"
-                                Path="/Assets/Icons/play.svg"
+                                Path="{Binding IsPlaying, Converter={StaticResource PlayPauseIconConverter}}"
                                 Stretch="Uniform" />
                         </Button>
 
