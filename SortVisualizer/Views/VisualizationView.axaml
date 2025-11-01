@@ -2,95 +2,149 @@
     x:Class="SortVisualizer.Views.VisualizationView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:SortVisualizer.Converters"
+    xmlns:models="clr-namespace:SortVisualizer.Models"
     xmlns:viewmodels="clr-namespace:SortVisualizer.ViewModels"
     xmlns:views="clr-namespace:SortVisualizer.Views"
     x:DataType="viewmodels:VisualizationViewModel">
 
-    <Grid RowDefinitions="6.5*,3.5*">
-        <views:PlayerView Grid.Row="0" DataContext="{Binding Player}" />
+    <UserControl.Resources>
+        <converters:IndentationConverter x:Key="IndentationConverter" />
+        <converters:BoolToColorConverter x:Key="BoolToColorConverter" />
+        <converters:BoolToOpacityConverter x:Key="BoolToOpacityConverter" />
+    </UserControl.Resources>
 
-        <Border
-            Grid.Row="1"
-            Margin="70,0,30,35"
-            Padding="10">
-            <Grid ColumnDefinitions="7*,3*">
-                <TextBlock
-                    Grid.Column="0"
-                    Margin="0,0,10,0"
-                    FontSize="20"
-                    LineHeight="35"
-                    Text="{Binding Description}"
-                    TextWrapping="Wrap" />
+    <Grid>
+        <!--  Main Content Area  -->
+        <Grid RowDefinitions="6.5*,3.5*">
+            <views:PlayerView Grid.Row="0" DataContext="{Binding Player}" />
 
-                <Grid
-                    Grid.Column="1"
-                    Margin="0,0,30,0"
-                    HorizontalAlignment="Right"
-                    ColumnDefinitions="Auto,Auto"
-                    RowDefinitions="Auto,Auto,Auto,Auto">
-
-                    <!--  Best Case  -->
-                    <Border
-                        Grid.Row="0"
+            <Border
+                Grid.Row="1"
+                Margin="70,0,30,35"
+                Padding="10">
+                <Grid ColumnDefinitions="7*,3*">
+                    <TextBlock
                         Grid.Column="0"
-                        Classes="ComplexityCellTitle">
-                        <TextBlock
-                            Text="Best Case" />
-                    </Border>
-                    <Border
-                        Grid.Row="0"
-                        Grid.Column="1"
-                        Classes="ComplexityCellData">
-                        <TextBlock Text="{Binding Complexity.BestCase}" />
-                    </Border>
+                        Margin="0,0,10,0"
+                        FontSize="20"
+                        LineHeight="35"
+                        Text="{Binding Description}"
+                        TextWrapping="Wrap" />
 
-                    <!--  Average Case  -->
-                    <Border
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        Classes="ComplexityCellTitle">
-                        <TextBlock
-                            Text="Average Case" />
-                    </Border>
-                    <Border
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        Classes="ComplexityCellData">
-                        <TextBlock Text="{Binding Complexity.AverageCase}" />
-                    </Border>
+                    <Grid Grid.Column="1" RowDefinitions="*,Auto">
+                        <!--  Content Area  -->
+                        <Border
+                            Grid.Row="0"
+                            Margin="0,0,30,0"
+                            Padding="10"
+                            Background="{DynamicResource SecondaryBackground}"
+                            CornerRadius="8">
+                            <Grid>
+                                <!--  Complexity Table  -->
+                                <Grid
+                                    ColumnDefinitions="Auto,Auto"
+                                    RowDefinitions="Auto,Auto,Auto,Auto"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    IsVisible="{Binding !Player.IsPseudoCodeExpanded}">
 
-                    <!--  Worst Case  -->
-                    <Border
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        Classes="ComplexityCellTitle">
-                        <TextBlock
-                            Text="Worst Case" />
-                    </Border>
-                    <Border
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        Classes="ComplexityCellData">
-                        <TextBlock Text="{Binding Complexity.WorstCase}" />
-                    </Border>
+                                    <!--  Best Case  -->
+                                    <Border
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        Classes="ComplexityCellTitle">
+                                        <TextBlock Text="Best Case" />
+                                    </Border>
+                                    <Border
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Classes="ComplexityCellData">
+                                        <TextBlock Text="{Binding Complexity.BestCase}" />
+                                    </Border>
 
-                    <!--  Space Complexity  -->
-                    <Border
-                        Grid.Row="3"
-                        Grid.Column="0"
-                        Classes="ComplexityCellTitle">
-                        <TextBlock
-                            Text="Space Complexity" />
-                    </Border>
-                    <Border
-                        Grid.Row="3"
-                        Grid.Column="1"
-                        Classes="ComplexityCellData">
-                        <TextBlock Text="{Binding Complexity.SpaceComplexity}" />
-                    </Border>
+                                    <!--  Average Case  -->
+                                    <Border
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Classes="ComplexityCellTitle">
+                                        <TextBlock Text="Average Case" />
+                                    </Border>
+                                    <Border
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Classes="ComplexityCellData">
+                                        <TextBlock Text="{Binding Complexity.AverageCase}" />
+                                    </Border>
+
+                                    <!--  Worst Case  -->
+                                    <Border
+                                        Grid.Row="2"
+                                        Grid.Column="0"
+                                        Classes="ComplexityCellTitle">
+                                        <TextBlock Text="Worst Case" />
+                                    </Border>
+                                    <Border
+                                        Grid.Row="2"
+                                        Grid.Column="1"
+                                        Classes="ComplexityCellData">
+                                        <TextBlock Text="{Binding Complexity.WorstCase}" />
+                                    </Border>
+
+                                    <!--  Space Complexity  -->
+                                    <Border
+                                        Grid.Row="3"
+                                        Grid.Column="0"
+                                        Classes="ComplexityCellTitle">
+                                        <TextBlock Text="Space Complexity" />
+                                    </Border>
+                                    <Border
+                                        Grid.Row="3"
+                                        Grid.Column="1"
+                                        Classes="ComplexityCellData">
+                                        <TextBlock Text="{Binding Complexity.SpaceComplexity}" />
+                                    </Border>
+                                </Grid>
+
+                                <!--  Pseudo Code Viewer  -->
+                                <ScrollViewer
+                                    MaxHeight="300"
+                                    HorizontalScrollBarVisibility="Disabled"
+                                    VerticalScrollBarVisibility="Auto"
+                                    IsVisible="{Binding Player.IsPseudoCodeExpanded}">
+                                    <ItemsControl HorizontalAlignment="Stretch" ItemsSource="{Binding Player.PseudoCodeLines}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate x:DataType="models:PseudoCodeLine">
+                                                <Border
+                                                    Margin="2"
+                                                    Padding="6,3"
+                                                    HorizontalAlignment="Stretch"
+                                                    Background="{Binding IsHighlighted, Converter={StaticResource BoolToColorConverter}}"
+                                                    CornerRadius="3">
+                                                    <TextBlock
+                                                        Margin="{Binding IndentLevel, Converter={StaticResource IndentationConverter}}"
+                                                        FontFamily="Consolas"
+                                                        FontSize="12"
+                                                        Text="{Binding Text}" />
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </ScrollViewer>
+                            </Grid>
+                        </Border>
+
+                        <ToggleButton
+                            Grid.Row="1"
+                            Width="200"
+                            Height="40"
+                            Margin="0,10,0,0"
+                            HorizontalAlignment="Center"
+                            IsChecked="{Binding Player.IsPseudoCodeExpanded, Mode=TwoWay}"
+                            Classes="DualStateSwitch" />
+                    </Grid>
                 </Grid>
-
-            </Grid>
-        </Border>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>

@@ -317,8 +317,7 @@
                             BorderBrush="Transparent"
                             BorderThickness="0"
                             Content="{TemplateBinding Content}"
-                            ContentTemplate="{TemplateBinding ContentTemplate}"
-                            TextBlock.Foreground="{DynamicResource ExpanderForeground}" />
+                            ContentTemplate="{TemplateBinding ContentTemplate}"/>
                     </Grid>
                 </Border>
             </ControlTemplate>
@@ -364,6 +363,100 @@
             <Setter Property="HorizontalAlignment" Value="Left" />
             <Setter Property="FontWeight" Value="Regular" />
             <Setter Property="FontSize" Value="20" />
+        </Style>
+    </Style>
+
+    <!--  Dual State Switch Toggle Button  -->
+    <Style Selector="ToggleButton.DualStateSwitch">
+
+        <Setter Property="Background" Value="#3A3A3A" />
+        <Setter Property="BorderBrush" Value="#555" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="5" />
+        <Setter Property="Padding" Value="2" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="{TemplateBinding CornerRadius}"
+                    Padding="{TemplateBinding Padding}">
+                    <Grid ColumnDefinitions="*,*">
+                        
+                        <Border
+                            x:Name="LeftSide"
+                            Grid.Column="0"
+                            Background="#555555"
+                            CornerRadius="18"
+                            Margin="1">
+                            
+                            <Svg
+                                Width="30"
+                                Height="30"
+                                Path="/Assets/Icons/info.svg" />
+                        </Border>
+                        
+                        <Border
+                            x:Name="RightSide"
+                            Grid.Column="1"
+                            Background="Transparent"
+                            CornerRadius="18"
+                            Margin="1">
+                            
+                            <Svg
+                                Width="30"
+                                Height="30"
+                                Path="/Assets/Icons/code.svg" />
+                        </Border>
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+        
+        <!--  Pseudo Code active  -->
+        <Style Selector="^:checked /template/ Border#LeftSide">
+            <Setter Property="Background" Value="Transparent" />
+            <Style Selector="^ > TextBlock">
+                <Setter Property="Foreground" Value="#B5B5B5" />
+            </Style>
+        </Style>
+        
+        <Style Selector="^:checked /template/ Border#RightSide">
+            <Setter Property="Background" Value="#555555" />
+            <Style Selector="^ > TextBlock">
+                <Setter Property="Foreground" Value="White" />
+            </Style>
+        </Style>
+        
+        <!--  Hover effects  -->
+        <Style Selector="^:pointerover">
+            <Setter Property="BorderBrush" Value="#777" />
+        </Style>
+        
+        <Style Selector="^:pointerover /template/ Border#LeftSide">
+            <Style Selector="^ > TextBlock">
+                <Setter Property="Foreground" Value="White" />
+            </Style>
+        </Style>
+        
+        <Style Selector="^:pointerover /template/ Border#RightSide">
+            <Style Selector="^ > TextBlock">
+                <Setter Property="Foreground" Value="White" />
+            </Style>
+        </Style>
+        
+        <!--  Checked hover state  -->
+        <Style Selector="^:checked:pointerover /template/ Border#LeftSide">
+            <Style Selector="^ > TextBlock">
+                <Setter Property="Foreground" Value="#B5B5B5" />
+            </Style>
+        </Style>
+        
+        <Style Selector="^:checked:pointerover /template/ Border#RightSide">
+            <Style Selector="^ > TextBlock">
+                <Setter Property="Foreground" Value="White" />
+            </Style>
         </Style>
     </Style>
 </Styles>

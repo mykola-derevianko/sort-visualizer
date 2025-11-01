@@ -38,6 +38,10 @@ public partial class PlayerViewModel : ObservableObject
     [ObservableProperty] 
     private ObservableCollection<PseudoCodeLine> pseudoCodeLines = new();
 
+    // Add this property to control progress bar interactivity
+    [ObservableProperty] 
+    private bool isProgressBarInteractive = true;
+
     public PlayerViewModel(SortManagerService sortManager, SettingsPopupViewModel settingsPopup, SortAlgorithm algorithm)
     {
         _sortManager = sortManager;
@@ -59,6 +63,12 @@ public partial class PlayerViewModel : ObservableObject
         };
 
         Generate(GenerateType.Random, algorithm);
+    }
+
+    // Update IsProgressBarInteractive when IsPlaying changes
+    partial void OnIsPlayingChanged(bool value)
+    {
+        IsProgressBarInteractive = !value;
     }
 
     partial void OnCurrentStepChanged(int value)
@@ -207,7 +217,7 @@ public partial class PlayerViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void Cancel()
+    public void Cancel()
     {
         _cts?.Cancel();
         _cts?.Dispose();

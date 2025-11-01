@@ -180,38 +180,5 @@
                 </Border>
             </StackPanel>
         </Border>
-
-        <!--  Pseudo Code Expander (Positioned on the left side)  -->
-        <Expander
-            Width="350"
-            MaxHeight="400"
-            Margin="20"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Center"
-            Background="{DynamicResource SecondaryBackground}"
-            CornerRadius="10"
-            Header="Pseudo Code"
-            IsExpanded="{Binding IsPseudoCodeExpanded, Mode=TwoWay}">
-
-            <ScrollViewer MaxHeight="300" VerticalScrollBarVisibility="Auto">
-                <ItemsControl ItemsSource="{Binding PseudoCodeLines}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate x:DataType="models:PseudoCodeLine">
-                            <Border
-                                Margin="2"
-                                Padding="8,4"
-                                Background="{Binding IsHighlighted, Converter={x:Static converters:BoolToColorConverter.Instance}}"
-                                CornerRadius="4">
-                                <TextBlock
-                                    Margin="{Binding IndentLevel, Converter={StaticResource IndentationConverter}}"
-                                    FontFamily="Consolas"
-                                    FontSize="12"
-                                    Text="{Binding Text}" />
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
-        </Expander>
     </Grid>
 </UserControl>

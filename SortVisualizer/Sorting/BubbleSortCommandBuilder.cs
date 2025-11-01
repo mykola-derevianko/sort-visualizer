@@ -10,7 +10,6 @@ namespace SortVisualizer.Sorting
         public List<ISortCommand> Build(IList<SortItem> items)
         {
             var commands = new List<ISortCommand>();
-
             var simulatedValues = items.Select(i => i.Value).ToList();
 
             for (int i = 0; i < simulatedValues.Count - 1; i++)
@@ -19,11 +18,11 @@ namespace SortVisualizer.Sorting
 
                 for (int j = 0; j < simulatedValues.Count - i - 1; j++)
                 {
-                    commands.Add(new CompareCommand(j, j + 1));
+                    commands.Add(new CompareCommand(j, j + 1, 3));
 
                     if (simulatedValues[j] > simulatedValues[j + 1])
                     {
-                        commands.Add(new SwapCommand(j, j + 1));
+                        commands.Add(new SwapCommand(j, j + 1, 4));
                         isSorted = false;
 
                         (simulatedValues[j], simulatedValues[j + 1]) = (simulatedValues[j + 1], simulatedValues[j]);
@@ -36,7 +35,5 @@ namespace SortVisualizer.Sorting
 
             return commands;
         }
-
     }
-
 }

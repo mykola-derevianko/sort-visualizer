@@ -1,21 +1,20 @@
 using Avalonia.Data.Converters;
-using Avalonia.Media;
 using System;
 using System.Globalization;
 
 namespace SortVisualizer.Converters
 {
-    public class BoolToColorConverter : IValueConverter
+    public class BoolToOpacityConverter : IValueConverter
     {
-        public static readonly BoolToColorConverter Instance = new();
+        public static readonly BoolToOpacityConverter Instance = new();
 
         public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            if (value is bool isHighlighted && isHighlighted)
+            if (value is bool boolValue)
             {
-                return new SolidColorBrush(Color.Parse("Red")); //Red highlight
+                return boolValue ? 1.0 : 0.5;
             }
-            return Brushes.Transparent;
+            return 0.5;
         }
 
         public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

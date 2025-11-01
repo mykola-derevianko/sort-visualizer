@@ -17,11 +17,12 @@ namespace SortVisualizer.Sorting
                 int key = simulatedValues[i];
                 int j = i - 1;
 
-                commands.Add(new SelectCommand(i));
+                commands.Add(new SelectCommand(i, 1));
 
                 while (j >= 0 && simulatedValues[j] > key)
                 {
-                    commands.Add(new CompareCommand(j, i));
+                    commands.Add(new CompareCommand(j, i, 3));
+                    
                     j--;
                 }
 
