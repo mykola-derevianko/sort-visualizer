@@ -23,4 +23,11 @@ public partial class PlayerView : UserControl
         }
     }
 
+    private void Border_ActualThemeVariantChanged(object? sender, System.EventArgs e)
+    {
+    }
+
+    private void Border_ActualThemeVariantChanged_1(object? sender, System.EventArgs e)
+    {
+    }
 }

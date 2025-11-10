@@ -18,19 +18,39 @@
         <StackPanel Spacing="12">
             <StackPanel>
                 <TextBox
-                    Margin="0,0,0,10"
+                    Margin="0,0,0,4"
                     HorizontalAlignment="Stretch"
                     AcceptsReturn="False"
                     Classes="settings-input"
+                    Classes.error="{Binding HasRawInputError}"
                     Text="{Binding RawInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Watermark="e.g. 5 12 9 3 8" />
+                
+                <!-- Error message for raw input -->
+                <TextBlock
+                    Margin="0,0,0,10"
+                    FontSize="11"
+                    Foreground="Red"
+                    IsVisible="{Binding HasRawInputError}"
+                    Text="{Binding RawInputError}"
+                    TextWrapping="Wrap" />
+                
                 <TextBox
+                    Margin="0,0,0,4"
                     HorizontalAlignment="Stretch"
                     AcceptsReturn="False"
                     Classes="settings-input"
+                    Classes.error="{Binding HasMaxElementsError}"
                     Text="{Binding MaxElementsValueText, Mode=TwoWay}"
                     Watermark="Enter amount of elements" />
 
+                <!-- Error message for max elements -->
+                <TextBlock
+                    FontSize="11"
+                    Foreground="Red"
+                    IsVisible="{Binding HasMaxElementsError}"
+                    Text="{Binding MaxElementsError}"
+                    TextWrapping="Wrap" />
 
             </StackPanel>
 

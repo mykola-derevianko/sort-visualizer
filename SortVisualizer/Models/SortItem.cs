@@ -22,7 +22,7 @@ namespace SortVisualizer.Models
             IsComparing = other.IsComparing;
             IsSwapping = other.IsSwapping;
             IsPivot = other.IsPivot;
-            IsSelected = other.isSelected;
+            IsSelected = other.IsSelected;
         }
     }
 

@@ -15,6 +15,8 @@
         <converters:PositiveNumberToBoolConverter x:Key="PositiveNumberToBoolConverter" />
         <converters:PlayPauseIconConverter x:Key="PlayPauseIconConverter" />
         <converters:IndentationConverter x:Key="IndentationConverter" />
+        <converters:MultiplyConverter x:Key="MultiplyConverter" />
+
     </UserControl.Resources>
 
     <Grid>
@@ -39,7 +41,7 @@
                             <DataTemplate x:DataType="models:SortItem">
                                 <Border
                                     Width="22"
-                                    Height="{Binding Value}"
+                                    Height="{Binding Value, Converter={StaticResource MultiplyConverter}, ConverterParameter=10}"
                                     Margin="1"
                                     VerticalAlignment="Bottom"
                                     Classes="sort-item"
@@ -53,13 +55,13 @@
                                         </MultiBinding>
                                     </Border.Background>
 
-                                    <!--  Add Tooltip  -->
                                     <ToolTip.Tip>
                                         <TextBlock
                                             FontSize="12"
                                             Foreground="Black"
                                             Text="{Binding Value}" />
                                     </ToolTip.Tip>
+
                                 </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -153,17 +155,7 @@
                             VerticalAlignment="Center"
                             Orientation="Horizontal"
                             Spacing="10">
-                            <Button
-                                x:Name="RestartCommand"
-                                Classes="controll-buttons"
-                                Command="{Binding RestartCommand}"
-                                ToolTip.Tip="Restart playback">
-                                <Svg
-                                    Width="25"
-                                    Height="25"
-                                    Path="/Assets/Icons/reset.svg" />
-                            </Button>
-
+                           
                             <Button
                                 x:Name="MenuButton"
                                 Margin="0,0,10,0"
@@ -174,6 +166,19 @@
                                     Height="25"
                                     Path="/Assets/Icons/settings.svg" />
                             </Button>
+                        
+                        
+                             <Button
+                                x:Name="RestartCommand"
+                                Classes="controll-buttons"
+                                Command="{Binding RestartCommand}"
+                                ToolTip.Tip="Restart playback">
+                                <Svg
+                                    Width="25"
+                                    Height="25"
+                                    Path="/Assets/Icons/reset.svg" />
+                            </Button>
+
                         </StackPanel>
 
                     </Grid>
