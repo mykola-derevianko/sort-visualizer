@@ -1,7 +1,8 @@
-﻿using System;
-using SortVisualizer.ViewModels;
+﻿using Microsoft.Extensions.DependencyInjection;
 using SortVisualizer.Models;
-using Microsoft.Extensions.DependencyInjection;
+using SortVisualizer.Sorting;
+using SortVisualizer.ViewModels;
+using System;
 
 namespace SortVisualizer.Services
 {
@@ -9,7 +10,15 @@ namespace SortVisualizer.Services
     {
         public static void AddCommonServices(this IServiceCollection collection)
         {
+
+            collection.AddTransient<ISortCommandBuilder, BubbleSortCommandBuilder>();
+            collection.AddTransient<ISortCommandBuilder, QuickSortCommandBuilder>();
+            collection.AddTransient<ISortCommandBuilder, InsertionSortCommandBuilder>();
+            collection.AddTransient<ISortCommandBuilder, SelectionSortCommandBuilder>();
+            collection.AddTransient<SortCommandBuilderFactory>();
+
             collection.AddTransient<SortItemGeneratorService>();
+
             collection.AddSingleton<SortManagerService>();
             collection.AddTransient<SettingsPopupViewModel>();
             // Player factory

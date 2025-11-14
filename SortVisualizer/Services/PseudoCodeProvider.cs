@@ -73,10 +73,9 @@ namespace SortVisualizer.Services
                 new("i = low - 1", 1),                // Line 6
                 new("for j = low to high-1", 1),      // Line 7
                 new("if arr[j] <= pivot", 2),         // Line 8
-                new("i = i + 1", 3),                  // Line 9
-                new("swap(arr[i], arr[j])", 3),       // Line 10
-                new("swap(arr[i+1], arr[high])", 1),  // Line 11
-                new("return i + 1", 1)                // Line 12
+                new("swap(arr[i], arr[j])", 3),       // Line 9
+                new("swap(arr[i+1], arr[high])", 1),  // Line 10
+                new("return i + 1", 1)                // Line 11
             };
         }
     }

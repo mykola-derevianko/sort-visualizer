@@ -22,12 +22,4 @@ public partial class PlayerView : UserControl
             vm.JumpToStepCommand.Execute((int)slider.Value);
         }
     }
-
-    private void Border_ActualThemeVariantChanged(object? sender, System.EventArgs e)
-    {
-    }
-
-    private void Border_ActualThemeVariantChanged_1(object? sender, System.EventArgs e)
-    {
-    }
 }

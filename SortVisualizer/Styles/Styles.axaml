@@ -164,10 +164,10 @@
 
     <!--  Popup  CHANGE!!!  -->
     <Style Selector="Popup.popup-settings">
-        <Setter Property="HorizontalOffset" Value="-150" />
+        <Setter Property="HorizontalOffset" Value="-110" />
         <Setter Property="IsLightDismissEnabled" Value="True" />
         <Setter Property="Placement" Value="Top" />
-        <Setter Property="VerticalOffset" Value="-50" />
+        <Setter Property="VerticalOffset" Value="-25" />
     </Style>
 
     <Style Selector="Popup.popup-settings > Border">

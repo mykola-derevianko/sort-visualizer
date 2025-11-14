@@ -5,8 +5,9 @@ using System.Linq;
 
 namespace SortVisualizer.Sorting
 {
-    public class SelectionSortCommandBuilder
+    public class SelectionSortCommandBuilder : ISortCommandBuilder
     {
+        public SortAlgorithm Algorithm => SortAlgorithm.SelectionSort;
         public List<ISortCommand> Build(IList<SortItem> items)
         {
             var commands = new List<ISortCommand>();

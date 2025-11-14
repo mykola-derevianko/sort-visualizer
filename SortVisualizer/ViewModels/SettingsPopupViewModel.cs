@@ -12,7 +12,7 @@ namespace SortVisualizer.ViewModels;
 public partial class SettingsPopupViewModel : ObservableObject
 {
     private const double DebounceIntervalSeconds = 0.5;
-    private const int MaxElementsLimit = 60;
+    private const int MaxElementsLimit = 50;
     private const int MinElementsLimit = 1;
     private const int DefaultMaxElements = 50;
 

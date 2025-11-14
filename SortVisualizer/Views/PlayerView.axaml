@@ -171,6 +171,7 @@
                              <Button
                                 x:Name="RestartCommand"
                                 Classes="controll-buttons"
+                                Margin="0,0,20,0"
                                 Command="{Binding RestartCommand}"
                                 ToolTip.Tip="Restart playback">
                                 <Svg
