@@ -18,11 +18,10 @@ and code snippets - is displayed alongside the animation.
 
 ### Starting Screen
 
-<img src="https://i.ibb.co/yB65mjzx/image.png" alt="Starting Screen" border="0">
+<img src="https://i.ibb.co/yB65mjzx/image.png" alt="Starting Screen">
 
 ### Visualization & Controls
-
-<img src="https://i.ibb.co/JRF1DG89/image.png" alt="Visualization" border="0">
+<img src="https://i.ibb.co/r2QG1vmY/image.png" alt="image" border="0">
 
 ---
 
